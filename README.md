@@ -28,9 +28,9 @@ Video:
 | Member        | Role               | GitHub                                             |
 | ------------- | ------------------ | -------------------------------------------------- |
 | Name          | Team Lead          | @GitHub                                            |
-| Michael Elsky | Frontend Developer | [michael-elsky] (https://github.com/michael-elsky) |
-| Anna Dzhyhota | Frontend Developer | [annadzig] (https://github.com/annadzig)           |
-| Mikhail Kruk  | Frontend Developer | [mikekruk] (https://github.com/mikekruk)           |
+| Michael Elsky | Frontend Developer | [michael-elsky](https://github.com/michael-elsky) |
+| Anna Dzhyhota | Frontend Developer | [annadzig](https://github.com/annadzig)           |
+| Mikhail Kruk  | Frontend Developer | [mikekruk](https://github.com/mikekruk)           |
 
 ## Local Setup
 
