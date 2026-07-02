@@ -1,9 +1,9 @@
+import { AuthForm } from '@/features/auth/components/auth-form';
+
 export default function SignUpPage() {
   return (
-    <main className="p-6">
-      <div className="border border-black p-6">
-        <h1 className="text-2xl font-bold">Sign Up</h1>
-      </div>
+    <main className="flex min-h-[calc(100vh-10rem)] items-center justify-center px-4 py-10">
+      <AuthForm mode="sign-up" />
     </main>
   );
 }
