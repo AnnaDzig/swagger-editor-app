@@ -68,7 +68,7 @@ export function AuthForm({ mode }: AuthFormProps) {
     },
   });
 
-  async function onSubmit(_values: AuthFormValues) {
+  async function onSubmit() {
     await Promise.resolve();
   }
 
