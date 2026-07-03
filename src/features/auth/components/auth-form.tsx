@@ -9,7 +9,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -20,9 +19,11 @@ import { authFormContent, type AuthFormMode } from '@/features/auth/constants';
 
 type AuthFormProps = {
   mode: AuthFormMode;
+  errorMessage?: string | null;
+  onSubmit?: (values: AuthFormValues) => Promise<void>;
 };
 
-export function AuthForm({ mode }: AuthFormProps) {
+export function AuthForm({ mode, errorMessage, onSubmit }: AuthFormProps) {
   const content = authFormContent[mode];
 
   const {
@@ -37,19 +38,23 @@ export function AuthForm({ mode }: AuthFormProps) {
     },
   });
 
-  async function onSubmit() {
-    await Promise.resolve();
+  async function handleAuthSubmit(values: AuthFormValues) {
+    await onSubmit?.(values);
   }
 
   return (
     <Card className="w-full max-w-md border-border/70 bg-card/95 shadow-xl">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">{content.title}</CardTitle>
+        <h1 className="text-2xl font-bold tracking-tight">{content.title}</h1>{' '}
         <CardDescription>{content.description}</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="space-y-5"
+          noValidate
+          onSubmit={handleSubmit(handleAuthSubmit)}
+        >
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium">
               Email
@@ -64,12 +69,15 @@ export function AuthForm({ mode }: AuthFormProps) {
               {...register('email')}
             />
             {errors.email && (
-              <p id="email-error" className="text-sm text-destructive">
+              <p
+                id="email-error"
+                role="alert"
+                className="text-sm text-destructive"
+              >
                 {errors.email.message}
               </p>
             )}
           </div>
-
           <div className="space-y-2">
             <label htmlFor="password" className="text-sm font-medium">
               Password
@@ -94,17 +102,29 @@ export function AuthForm({ mode }: AuthFormProps) {
               character.
             </p>
             {errors.password && (
-              <p id="password-error" className="text-sm text-destructive">
+              <p
+                id="password-error"
+                role="alert"
+                className="text-sm text-destructive"
+              >
                 {errors.password.message}
               </p>
             )}
+
+            {errorMessage && (
+              <p
+                role="alert"
+                className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              >
+                {errorMessage}
+              </p>
+            )}
+
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Please wait...' : content.submitLabel}
+            </Button>
           </div>
-
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Please wait...' : content.submitLabel}
-          </Button>
         </form>
-
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {content.switchText}{' '}
           <Link
