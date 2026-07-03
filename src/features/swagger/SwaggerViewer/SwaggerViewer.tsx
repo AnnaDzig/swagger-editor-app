@@ -10,8 +10,15 @@ const SwaggerViewer = () => {
   const [searchTerm, setApiSearchTerm] = useState<string>('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  const { title, version, servers, tags, endpointCount } =
-    extractViewerData(MOCK_SCHEMA);
+  const {
+    title,
+    version,
+    servers = [],
+    tags,
+    endpointCount,
+  } = extractViewerData(MOCK_SCHEMA);
+
+  const [activeServer, setActiveServer] = useState(servers[0] ?? '');
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setApiSearchTerm(e.target.value);
@@ -25,19 +32,25 @@ const SwaggerViewer = () => {
     setActiveTag(activeTag);
   };
 
+  const handleActiveServer = (server: string | null) => {
+    setActiveServer(server ?? '');
+  };
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden relative">
       <SwaggerViewerHeader
         title={title}
         version={version}
-        servers={servers}
         tags={tags}
+        servers={servers}
         endpointCount={endpointCount}
         searchTerm={searchTerm}
         onSearch={handleSearch}
         onClearSearchField={handleClearSearchField}
         onSetActiveTag={handleActiveTag}
         activeTag={activeTag}
+        onActiveServer={handleActiveServer}
+        activeServer={activeServer}
       />
 
       <SwaggerViewerBody

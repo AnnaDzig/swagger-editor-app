@@ -2,7 +2,6 @@
 
 import { SwaggerViewerHeaderProps } from '@/types/SwaggerViewer';
 import { Search, Server, X } from 'lucide-react';
-import { useState } from 'react';
 
 const SwaggerViewerHeader = ({
   title,
@@ -15,9 +14,9 @@ const SwaggerViewerHeader = ({
   onClearSearchField,
   onSetActiveTag,
   activeTag,
+  onActiveServer,
+  activeServer,
 }: SwaggerViewerHeaderProps) => {
-  const [activeServer, setActiveServer] = useState(servers[0] ?? '');
-
   return (
     <div className="shrink-0 border-b px-4 py-3 bg-[#0b0e14] border-[#30363d]">
       <div className="flex items-center gap-3 mb-2.5 border-[#30363d]">
@@ -34,8 +33,7 @@ const SwaggerViewerHeader = ({
 
           {tags.length > 0 && (
             <p className="text-[11px] mt-0.5 text-[#6e7681]">
-              {endpointCount ? `${endpointCount} endpoints` : null} -{' '}
-              {`${tags.length} tags`}
+              {`${endpointCount} endpoints`} - {`${tags.length} tags`}
             </p>
           )}
         </div>
@@ -47,7 +45,7 @@ const SwaggerViewerHeader = ({
               name="select"
               title="select api"
               value={activeServer}
-              onChange={(e) => setActiveServer(e.target.value)}
+              onChange={(e) => onActiveServer(e.target.value)}
               className="text-xs rounded-md border px-2 py-1.5 focus:outline-none transition-colors bg-[#161b22] border-[#30363d] text-[#e6edf3]"
             >
               {servers.map((server) => (

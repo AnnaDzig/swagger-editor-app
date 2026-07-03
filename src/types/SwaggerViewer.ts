@@ -12,6 +12,8 @@ export interface SwaggerViewerHeaderProps {
   onClearSearchField: () => void;
   onSetActiveTag: (activeTag: string | null) => void;
   activeTag: string | null;
+  onActiveServer: (server: string | null) => void;
+  activeServer: string;
 }
 
 export interface SwaggerViewerBodyProps {
