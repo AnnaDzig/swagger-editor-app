@@ -1,15 +1,6 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-const HTTP_METHODS = [
-  'get',
-  'post',
-  'put',
-  'patch',
-  'delete',
-  'options',
-  'head',
-  'trace',
-] as const;
+import { HTTP_METHODS } from './http-methods';
 
 const extractViewerData = (schema: OpenAPIV3.Document) => {
   const title = schema.info.title;
@@ -38,5 +29,27 @@ const extractViewerData = (schema: OpenAPIV3.Document) => {
     endpointCount,
   };
 };
+
+export function getOperations(schema: OpenAPIV3.Document) {
+  return Object.entries(schema.paths).flatMap(([path, pathItem]) =>
+    HTTP_METHODS.flatMap((method) => {
+      if (!pathItem) {
+        return [];
+      }
+
+      const operation = pathItem[method];
+
+      return operation
+        ? [
+            {
+              path,
+              method,
+              operation,
+            },
+          ]
+        : [];
+    }),
+  );
+}
 
 export default extractViewerData;

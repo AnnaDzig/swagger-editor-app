@@ -13,8 +13,9 @@ const SwaggerViewerHeader = ({
   onSearch,
   searchTerm,
   onClearSearchField,
+  onSetActiveTag,
+  activeTag,
 }: SwaggerViewerHeaderProps) => {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeServer, setActiveServer] = useState(servers[0] ?? '');
 
   return (
@@ -87,7 +88,7 @@ const SwaggerViewerHeader = ({
                   key={apiTag}
                   className={`text-xs px-2.5 py-1.5 rounded-md border transition-all duration-150 ${activeTag === apiTag ? `bg-[#6366f110] border-[#6366f138] text-[#818cf8]` : `bg-transparent border-[#30363d] text-[#6e7681]`}`}
                   onClick={() =>
-                    setActiveTag(activeTag === apiTag ? null : apiTag)
+                    onSetActiveTag(activeTag === apiTag ? null : apiTag)
                   }
                 >
                   {apiTag}
