@@ -23,6 +23,7 @@ const SwaggerViewerHeader = ({
       <div className="flex items-center gap-3 mb-2.5 border-[#30363d]">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
+            <p className="text-[0px]">Swagger Viewer</p>
             <h2 className="text-sm font-semibold text-[#e6edf3] tracking-tight">
               {title && `${title}`}
             </h2>
