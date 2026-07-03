@@ -7,6 +7,10 @@ vi.mock('@/features/auth/components/private-route-guard', () => ({
   ),
 }));
 
+vi.mock('@/features/history/components/history-view', () => ({
+  HistoryView: () => <div data-testid="history-view">History view</div>,
+}));
+
 describe('HistoryPage', () => {
   it('renders history page inside private route guard', () => {
     render(<HistoryPage />);
@@ -15,6 +19,6 @@ describe('HistoryPage', () => {
     expect(
       screen.getByRole('heading', { name: /request history/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/no requests yet/i)).toBeInTheDocument();
+    expect(screen.getByTestId('history-view')).toBeInTheDocument();
   });
 });

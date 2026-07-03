@@ -1,4 +1,5 @@
 import { PrivateRouteGuard } from '@/features/auth/components/private-route-guard';
+import { HistoryView } from '@/features/history/components/history-view';
 
 export default function HistoryPage() {
   return (
@@ -13,18 +14,12 @@ export default function HistoryPage() {
               Request history
             </h1>
             <p className="max-w-2xl text-muted-foreground">
-              Your executed API requests and analytics will appear here after
-              you use Try It Out in the Swagger Viewer.
+              Your executed API requests and analytics appear here after you use
+              Try It Out in the Swagger Viewer.
             </p>
           </div>
 
-          <div className="mt-8 rounded-xl border border-dashed border-border bg-muted/30 p-8 text-center">
-            <h2 className="text-lg font-semibold">No requests yet</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              You haven&apos;t executed any API requests yet. Go back to the
-              editor, load a schema, and try an endpoint.
-            </p>
-          </div>
+          <HistoryView />
         </section>
       </main>
     </PrivateRouteGuard>
