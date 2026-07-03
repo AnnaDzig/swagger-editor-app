@@ -1,15 +1,19 @@
 import { NextResponse } from 'next/server';
+import { getAuthenticatedUserFromRequest } from '@/features/auth/server/get-authenticated-user';
 import { proxyRequestSchema } from '@/features/api/schemas/proxy-request-schema';
 import {
   getHeadersRecord,
   getPayloadSizeInBytes,
 } from '@/features/api/utils/analytics';
+import { saveRequestHistory } from '@/features/history/server/history-repository';
 
 export async function POST(request: Request) {
   const startedAt = performance.now();
 
   try {
+    const authenticatedUser = await getAuthenticatedUserFromRequest(request);
     const rawBody: unknown = await request.json();
+
     const parsedRequest = proxyRequestSchema.safeParse(rawBody);
 
     if (!parsedRequest.success) {
@@ -50,20 +54,34 @@ export async function POST(request: Request) {
       data = responseText;
     }
 
+    const analytics = {
+      endpointUrl,
+      method,
+      status: response.status,
+      duration,
+      requestSize: getPayloadSizeInBytes(body),
+      responseSize: getPayloadSizeInBytes(responseText),
+      errorDetails: response.ok ? undefined : response.statusText,
+      timestamp: Date.now(),
+    };
+
+    let historySaved = false;
+
+    if (authenticatedUser) {
+      try {
+        await saveRequestHistory(authenticatedUser.uid, analytics);
+        historySaved = true;
+      } catch {
+        historySaved = false;
+      }
+    }
+
     return NextResponse.json({
       data,
       status: response.status,
       headers: getHeadersRecord(response.headers),
-      analytics: {
-        endpointUrl,
-        method,
-        status: response.status,
-        duration,
-        requestSize: getPayloadSizeInBytes(body),
-        responseSize: getPayloadSizeInBytes(responseText),
-        errorDetails: response.ok ? undefined : response.statusText,
-        timestamp: Date.now(),
-      },
+      analytics,
+      historySaved,
     });
   } catch (error) {
     const duration = Math.round(performance.now() - startedAt);
