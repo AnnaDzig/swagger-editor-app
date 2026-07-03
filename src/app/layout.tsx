@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { AppFooter } from '@/components/layout/app-footer';
 import { AppHeader } from '@/components/layout/app-header';
 import { QueryProvider } from '@/components/providers/query-provider';
+import { AuthProvider } from '@/components/providers/auth-provider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,11 +19,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body>
         <QueryProvider>
-          <div className="flex min-h-screen flex-col">
-            <AppHeader />
-            <div className="flex-1">{children}</div>
-            <AppFooter />
-          </div>
+          <AuthProvider>
+            <div className="flex min-h-screen flex-col">
+              <AppHeader />
+              <div className="flex-1">{children}</div>
+              <AppFooter />
+            </div>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

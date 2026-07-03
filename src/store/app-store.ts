@@ -5,10 +5,12 @@ import type { SwaggerSchemaState } from '@/types/schema';
 
 interface AppStore {
   user: User | null;
+  isAuthLoading: boolean;
   schema: SwaggerSchemaState;
   history: RequestAnalytics[];
 
   setUser: (user: User | null) => void;
+  setIsAuthLoading: (isLoading: boolean) => void;
   setSchema: (schema: SwaggerSchemaState) => void;
   setRawSchemaContent: (rawContent: string) => void;
   addToHistory: (item: RequestAnalytics) => void;
@@ -25,10 +27,13 @@ const initialSchema: SwaggerSchemaState = {
 
 export const useAppStore = create<AppStore>((set) => ({
   user: null,
+  isAuthLoading: true,
   schema: initialSchema,
   history: [],
 
   setUser: (user) => set({ user }),
+
+  setIsAuthLoading: (isAuthLoading) => set({ isAuthLoading }),
 
   setSchema: (schema) => set({ schema }),
 

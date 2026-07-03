@@ -1,3 +1,4 @@
+'use client';
 import { FileCode2, History, LogIn, LogOut, Zap } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -6,14 +7,39 @@ import {
   publicNavigationItems,
 } from '@/constants/navigation';
 import { ROUTES } from '@/constants/routes';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { signOutUser } from '@/features/auth/api/auth-client';
+import { useAppStore } from '@/store/app-store';
 
 export function AppHeader() {
-  const isAuthenticated = false;
+  const router = useRouter();
+  const user = useAppStore((state) => state.user);
+  const isAuthLoading = useAppStore((state) => state.isAuthLoading);
+  const setUser = useAppStore((state) => state.setUser);
+  const [signOutError, setSignOutError] = useState<string | null>(null);
+
+  const isAuthenticated = Boolean(user);
   const authNavigationItems = isAuthenticated
     ? authenticatedNavigationItems
     : guestNavigationItems;
 
-  const navigationItems = [...publicNavigationItems, ...authNavigationItems];
+  const navigationItems = [
+    ...publicNavigationItems,
+    ...(isAuthLoading ? [] : authNavigationItems),
+  ];
+
+  async function handleSignOut() {
+    setSignOutError(null);
+
+    try {
+      await signOutUser();
+      setUser(null);
+      router.push(ROUTES.MAIN);
+    } catch {
+      setSignOutError('Could not sign out. Please try again.');
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950 text-slate-100">
@@ -89,12 +115,18 @@ export function AppHeader() {
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-5 py-3 font-semibold text-slate-400 transition-colors hover:border-slate-700 hover:bg-slate-900 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                onClick={handleSignOut}
               >
                 <LogOut className="size-4" aria-hidden="true" />
                 Sign Out
               </button>
             )}
           </nav>
+          {signOutError && (
+            <p role="alert" className="sr-only">
+              {signOutError}
+            </p>
+          )}
         </div>
       </div>
     </header>
