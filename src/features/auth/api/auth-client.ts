@@ -4,9 +4,13 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseAuth } from '@/lib/firebase/client';
-import type { AuthFormValues } from '@/features/auth/schemas/auth-schema';
 
-export async function signInWithEmail(values: AuthFormValues) {
+type AuthCredentials = {
+  email: string;
+  password: string;
+};
+
+export async function signInWithEmail(values: AuthCredentials) {
   const userCredential = await signInWithEmailAndPassword(
     firebaseAuth,
     values.email,
@@ -16,7 +20,7 @@ export async function signInWithEmail(values: AuthFormValues) {
   return userCredential.user;
 }
 
-export async function signUpWithEmail(values: AuthFormValues) {
+export async function signUpWithEmail(values: AuthCredentials) {
   const userCredential = await createUserWithEmailAndPassword(
     firebaseAuth,
     values.email,

@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { AuthForm } from '@/features/auth/components/auth-form';
 import { signInWithEmail } from '@/features/auth/api/auth-client';
-import { getPostAuthRedirectPath } from '@/features/auth/utils/auth-redirects';
+import { AuthForm } from '@/features/auth/components/auth-form';
 import { getAuthErrorMessage } from '@/features/auth/utils/auth-errors';
+import { getPostAuthRedirectPath } from '@/features/auth/utils/auth-redirects';
 import type { AuthFormValues } from '@/features/auth/schemas/auth-schema';
 
 export function SignInForm() {

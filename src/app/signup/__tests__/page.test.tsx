@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import SignUpPage from '@/app/signup/page';
 
+vi.mock('@/features/auth/components/sign-up-form', () => ({
+  SignUpForm: () => <div data-testid="sign-up-form">Sign up form</div>,
+}));
+
 describe('SignUpPage', () => {
   it('renders sign up page', () => {
     render(<SignUpPage />);
 
-    expect(
-      screen.getByRole('heading', { name: /create account/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
   });
 });

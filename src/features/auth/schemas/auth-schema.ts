@@ -17,4 +17,15 @@ export const authSchema = z.object({
     ),
 });
 
-export type AuthFormValues = z.infer<typeof authSchema>;
+export const signUpSchema = authSchema
+  .extend({
+    confirmPassword: z.string().min(1, 'Please confirm your password.'),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: 'Passwords do not match.',
+    path: ['confirmPassword'],
+  });
+
+export type AuthFormValues = z.infer<typeof authSchema> & {
+  confirmPassword?: string;
+};

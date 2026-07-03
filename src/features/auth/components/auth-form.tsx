@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   authSchema,
+  signUpSchema,
   type AuthFormValues,
 } from '@/features/auth/schemas/auth-schema';
 import { authFormContent, type AuthFormMode } from '@/features/auth/constants';
@@ -26,15 +27,18 @@ type AuthFormProps = {
 export function AuthForm({ mode, errorMessage, onSubmit }: AuthFormProps) {
   const content = authFormContent[mode];
 
+  const validationSchema = mode === 'sign-up' ? signUpSchema : authSchema;
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AuthFormValues>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(validationSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -118,6 +122,38 @@ export function AuthForm({ mode, errorMessage, onSubmit }: AuthFormProps) {
               >
                 {errorMessage}
               </p>
+            )}
+            {mode === 'sign-up' && (
+              <div className="space-y-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium"
+                >
+                  Confirm password
+                </label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Repeat your password"
+                  aria-invalid={Boolean(errors.confirmPassword)}
+                  aria-describedby={
+                    errors.confirmPassword
+                      ? 'confirm-password-error'
+                      : undefined
+                  }
+                  {...register('confirmPassword')}
+                />
+                {errors.confirmPassword && (
+                  <p
+                    id="confirm-password-error"
+                    role="alert"
+                    className="text-sm text-destructive"
+                  >
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
             )}
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
