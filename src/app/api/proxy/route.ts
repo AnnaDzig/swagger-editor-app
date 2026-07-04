@@ -7,6 +7,8 @@ import {
 } from '@/features/api/utils/analytics';
 import { saveRequestHistory } from '@/features/history/server/history-repository';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   const startedAt = performance.now();
 

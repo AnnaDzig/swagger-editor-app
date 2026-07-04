@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getAuthenticatedUserFromRequest } from '@/features/auth/server/get-authenticated-user';
 import { getRequestHistory } from '@/features/history/server/history-repository';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const authenticatedUser = await getAuthenticatedUserFromRequest(request);
 

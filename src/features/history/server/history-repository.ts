@@ -1,5 +1,5 @@
 import { FieldValue } from 'firebase-admin/firestore';
-import { adminDb } from '@/lib/firebase/admin';
+import { getAdminDb } from '@/lib/firebase/admin';
 import type { RequestAnalytics } from '@/types/history';
 
 type SaveRequestHistoryInput = Omit<
@@ -26,7 +26,7 @@ export async function saveRequestHistory(
   userId: string,
   analytics: SaveRequestHistoryInput,
 ) {
-  const historyRef = adminDb
+  const historyRef = getAdminDb()
     .collection('users')
     .doc(userId)
     .collection('requestHistory');
@@ -46,7 +46,7 @@ export async function saveRequestHistory(
 }
 
 export async function getRequestHistory(userId: string) {
-  const snapshot = await adminDb
+  const snapshot = await getAdminDb()
     .collection('users')
     .doc(userId)
     .collection('requestHistory')

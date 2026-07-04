@@ -12,17 +12,31 @@ function getRequiredEnv(name: string) {
   return value;
 }
 
-const privateKey = getRequiredEnv('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n');
+function getAdminApp() {
+  const existingApp = getApps()[0];
 
-const adminApp = getApps().length
-  ? getApps()[0]
-  : initializeApp({
-      credential: cert({
-        projectId: getRequiredEnv('FIREBASE_PROJECT_ID'),
-        clientEmail: getRequiredEnv('FIREBASE_CLIENT_EMAIL'),
-        privateKey,
-      }),
-    });
+  if (existingApp) {
+    return existingApp;
+  }
 
-export const adminAuth = getAuth(adminApp);
-export const adminDb = getFirestore(adminApp);
+  const privateKey = getRequiredEnv('FIREBASE_PRIVATE_KEY').replace(
+    /\\n/g,
+    '\n',
+  );
+
+  return initializeApp({
+    credential: cert({
+      projectId: getRequiredEnv('FIREBASE_PROJECT_ID'),
+      clientEmail: getRequiredEnv('FIREBASE_CLIENT_EMAIL'),
+      privateKey,
+    }),
+  });
+}
+
+export function getAdminAuth() {
+  return getAuth(getAdminApp());
+}
+
+export function getAdminDb() {
+  return getFirestore(getAdminApp());
+}
