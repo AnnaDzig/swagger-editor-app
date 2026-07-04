@@ -32,8 +32,8 @@ const SwaggerViewer = () => {
     setActiveTag(activeTag);
   };
 
-  const handleActiveServer = (server: string | null) => {
-    setActiveServer(server ?? '');
+  const handleActiveServer = (server: string) => {
+    setActiveServer(server);
   };
 
   return (
