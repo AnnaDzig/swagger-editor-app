@@ -67,6 +67,16 @@ describe('extractViewerData', () => {
     expect(result.tags).toHaveLength(0);
     expect(result.endpointCount).toBe(0);
   });
+
+  it('ignores undefined path items when counting endpoints', () => {
+    const schema = schemaType();
+
+    schema.paths['/broken'] = undefined as unknown as OpenAPIV3.PathItemObject;
+
+    const result = extractViewerData(schema);
+
+    expect(result.endpointCount).toBe(0);
+  });
 });
 
 describe('getOperations', () => {
@@ -84,5 +94,15 @@ describe('getOperations', () => {
     const operations = getOperations(schema);
 
     expect(operations).toHaveLength(0);
+  });
+
+  it('ignores undefined path items when getting operations', () => {
+    const schema = schemaType();
+
+    schema.paths['/broken'] = undefined as unknown as OpenAPIV3.PathItemObject;
+
+    const operations = getOperations(schema);
+
+    expect(operations).toHaveLength(3);
   });
 });
