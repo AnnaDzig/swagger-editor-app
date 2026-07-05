@@ -17,7 +17,6 @@ export interface SwaggerViewerHeaderProps {
 }
 
 export interface SwaggerViewerBodyProps {
-  tags: string[] | undefined;
   activeTag: string | null;
   activeEndpoint: string;
   schema: OpenAPIV3.Document;

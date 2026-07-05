@@ -54,7 +54,6 @@ const SwaggerViewer = () => {
       />
 
       <SwaggerViewerBody
-        tags={tags}
         activeTag={activeTag}
         activeEndpoint={searchTerm}
         schema={MOCK_SCHEMA}

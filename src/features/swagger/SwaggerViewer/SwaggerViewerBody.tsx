@@ -9,9 +9,9 @@ import { SwaggerViewerBodyProps } from '@/types/SwaggerViewer';
 import { getOperations } from './extractViewerData';
 import getColor from './getColor';
 import NoEndpoints from './NoEndpoints';
+import { groupByTag } from './groupByTag';
 
 const SwaggerViewerBody = ({
-  tags,
   activeTag,
   activeEndpoint,
   schema,
@@ -19,10 +19,6 @@ const SwaggerViewerBody = ({
   onSetActiveTag,
 }: SwaggerViewerBodyProps) => {
   const operations = getOperations(schema);
-
-  const filteredTags = activeTag
-    ? tags?.filter((tag) => tag === activeTag)
-    : tags;
 
   const query = activeEndpoint.trim().toLowerCase();
   const filteredOperations = query
@@ -44,12 +40,18 @@ const SwaggerViewerBody = ({
     );
   }
 
+  const grouped = groupByTag(filteredOperations);
+
+  const filteredTags = activeTag
+    ? Object.entries(grouped)?.filter(([tag]) => tag === activeTag)
+    : Object.entries(grouped);
+
   return (
     <div className="shrink-0 border-b px-4 py-3 bg-[#0b0e14] border-[#30363d]">
       <div className="flex items-center gap-3 mb-2.5 border-[#30363d]">
         <div className="flex-1 min-w-0">
           <ul className="flex flex-col gap-3 text-[#e6edf3]">
-            {filteredTags?.map((tag) => {
+            {filteredTags?.map(([tag, operations]) => {
               return (
                 <li className="flex flex-col gap-2" key={tag}>
                   <h3 className="flex items-center gap-1.5 relative after:block after:bg-[#30363d] after:w-full after:h-px ">
@@ -57,7 +59,7 @@ const SwaggerViewerBody = ({
                   </h3>
 
                   <ul className="flex flex-col gap-1.5 ">
-                    {filteredOperations.map((operation, i) => {
+                    {operations.map((operation, i) => {
                       const method = operation.method.toUpperCase();
                       const path = operation.path;
                       const summary = operation.operation.summary;
