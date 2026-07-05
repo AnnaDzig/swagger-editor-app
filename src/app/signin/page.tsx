@@ -1,9 +1,12 @@
+import { AuthRouteGuard } from '@/features/auth/components/auth-route-guard';
+import { SignInForm } from '@/features/auth/components/sign-in-form';
+
 export default function SignInPage() {
   return (
-    <main className="p-6">
-      <div className="border border-black p-6">
-        <h1 className="text-2xl font-bold">Sign In</h1>
-      </div>
+    <main className="flex min-h-[calc(100vh-10rem)] items-center justify-center bg-muted/20 px-4 py-10">
+      <AuthRouteGuard>
+        <SignInForm />
+      </AuthRouteGuard>
     </main>
   );
 }
