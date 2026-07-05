@@ -6,6 +6,19 @@ import { MOCK_SCHEMA } from '@/mocks/mockSchema';
 import { userEvent } from '@testing-library/user-event';
 
 describe('SwaggerViewerBody', () => {
+  vi.mock('@/features/swagger/SwaggerViewer/extractViewerData', () => ({
+    getOperations: vi.fn(() => [
+      {
+        method: 'get',
+        path: '/users/{id}',
+        operation: {
+          summary: 'Get user by ID',
+          tags: ['users', 'posts'],
+        },
+      },
+    ]),
+  }));
+
   const defaultProps = {
     tags: ['users', 'posts'],
     activeTag: null,
@@ -32,7 +45,7 @@ describe('SwaggerViewerBody', () => {
   it('renders endpoint method and path', () => {
     render(<SwaggerViewerBody {...defaultProps} />);
 
-    expect(screen.getAllByText('GET')).toHaveLength(4);
+    expect(screen.getAllByText('GET')).toHaveLength(2);
     expect(screen.getAllByText('/users/{id}').length).toBeGreaterThan(0);
   });
 
