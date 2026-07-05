@@ -23,3 +23,12 @@ export interface SwaggerViewerBodyProps {
   onClearSearchField: () => void;
   onSetActiveTag: (activeTag: string | null) => void;
 }
+
+export type Operations = Array<{
+  method: string;
+  path: string;
+  operation: {
+    summary?: string;
+    tags?: Array<string | OpenAPIV3.TagObject>;
+  };
+}>;

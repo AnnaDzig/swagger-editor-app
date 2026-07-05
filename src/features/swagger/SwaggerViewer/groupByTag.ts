@@ -1,13 +1,4 @@
-import { OpenAPIV3 } from 'openapi-types';
-
-type Operations = Array<{
-  method: string;
-  path: string;
-  operation: {
-    summary?: string;
-    tags?: Array<string | OpenAPIV3.TagObject>;
-  };
-}>;
+import { Operations } from '@/types/SwaggerViewer';
 
 export const groupByTag = (operations: Operations) => {
   const grouped: Record<string, Operations> = {};
