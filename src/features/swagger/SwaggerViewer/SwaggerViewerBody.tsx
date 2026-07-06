@@ -10,6 +10,7 @@ import { getOperations } from './extractViewerData';
 import getColor from './getColor';
 import NoEndpoints from './NoEndpoints';
 import { groupByTag } from './groupByTag';
+import EndpointDetails from './EndpointDetails';
 
 const SwaggerViewerBody = ({
   activeTag,
@@ -74,9 +75,9 @@ const SwaggerViewerBody = ({
                           key={key}
                         >
                           <Accordion type="single" collapsible>
-                            <AccordionItem value={`item-${i}`}>
+                            <AccordionItem className="px-0" value={`item-${i}`}>
                               <AccordionTrigger className="hover:no-underline hover:bg-[#1B1F26]">
-                                <div className="flex w-full items-center justify-between pr-4">
+                                <div className="flex w-full items-center justify-between pr-4 px-4">
                                   <p className="flex items-center gap-3">
                                     <span
                                       className="flex justify-center items-center w-[52] h-[25] border rounded"
@@ -94,7 +95,9 @@ const SwaggerViewerBody = ({
                                   <p>{summary}</p>
                                 </div>
                               </AccordionTrigger>
-                              <AccordionContent>Test</AccordionContent>
+                              <AccordionContent className="hover:no-underline hover:bg-[#1B1F26] border-t border-[#30363D] px-4">
+                                <EndpointDetails operations={operations} />
+                              </AccordionContent>
                             </AccordionItem>
                           </Accordion>
                         </li>

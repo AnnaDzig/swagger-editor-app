@@ -1,5 +1,5 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
 export interface SwaggerViewerHeaderProps {
   title: string;
@@ -24,11 +24,30 @@ export interface SwaggerViewerBodyProps {
   onSetActiveTag: (activeTag: string | null) => void;
 }
 
-export type Operations = Array<{
+export interface Parameter {
+  name: string;
+  in: string;
+  required: boolean;
+  description: string;
+  schema: OpenAPIV3.Document[];
+}
+
+export type Operation = {
   method: string;
   path: string;
-  operation: {
-    summary?: string;
-    tags?: Array<string | OpenAPIV3.TagObject>;
-  };
-}>;
+  operation: OpenAPIV3.OperationObject;
+};
+
+export type Operations = Operation[];
+
+export interface EndpointDetailsProps {
+  operations: Operations;
+}
+export interface SpanProps {
+  children: ReactNode;
+  className?: string;
+  fontSize?: string;
+  color?: string;
+  borderColor?: string;
+  bg?: string;
+}

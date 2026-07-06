@@ -7,13 +7,11 @@ export const groupByTag = (operations: Operations) => {
     const tags = operation.operation.tags || ['untagged'];
 
     tags.forEach((tag) => {
-      const tagName = typeof tag === 'string' ? tag : tag.name;
-
-      if (!grouped[tagName]) {
-        grouped[tagName] = [];
+      if (!grouped[tag]) {
+        grouped[tag] = [];
       }
 
-      grouped[tagName].push(operation);
+      grouped[tag].push(operation);
     });
   });
 

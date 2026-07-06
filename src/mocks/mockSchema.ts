@@ -125,6 +125,20 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
         tags: ['Auth'],
 
         summary: 'Login',
+        description: 'Authenticates a user and returns a session token',
+
+        parameters: [
+          {
+            name: 'X-Client-Version',
+            in: 'header',
+            required: false,
+            description: 'Version of the client application',
+            schema: {
+              type: 'string',
+            },
+            example: '1.2.0',
+          },
+        ],
 
         requestBody: {
           required: true,
@@ -173,6 +187,7 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
         tags: ['Pets'],
 
         summary: 'Get pets',
+        description: 'Returns a list of pets',
 
         parameters: [
           {
@@ -185,6 +200,47 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
             },
 
             example: 10,
+          },
+          {
+            name: 'offset',
+            in: 'query',
+            required: false,
+            description:
+              'Number of items to skip before starting to collect the result set',
+            schema: {
+              type: 'integer',
+            },
+            example: 0,
+          },
+          {
+            name: 'type',
+            in: 'query',
+            required: false,
+            description: 'Filter pets by type',
+            schema: {
+              type: 'string',
+            },
+            example: 'Dog',
+          },
+          {
+            name: 'sort',
+            in: 'query',
+            required: false,
+            description: 'Sort order for results',
+            schema: {
+              type: 'string',
+              enum: ['asc', 'desc'],
+            },
+            example: 'asc',
+          },
+          {
+            name: 'X-Request-ID',
+            in: 'header',
+            required: false,
+            description: 'Unique request identifier for tracing',
+            schema: {
+              type: 'string',
+            },
           },
         ],
 
@@ -238,6 +294,29 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
         tags: ['Pets'],
 
         summary: 'Create pet',
+        description: 'Creates a new pet record',
+
+        parameters: [
+          {
+            name: 'X-Request-ID',
+            in: 'header',
+            required: false,
+            description: 'Unique request identifier for tracing',
+            schema: {
+              type: 'string',
+            },
+          },
+          {
+            name: 'notify',
+            in: 'query',
+            required: false,
+            description: 'Whether to send a notification after creation',
+            schema: {
+              type: 'boolean',
+            },
+            example: false,
+          },
+        ],
 
         requestBody: {
           required: true,
