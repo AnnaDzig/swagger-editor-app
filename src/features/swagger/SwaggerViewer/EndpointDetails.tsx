@@ -3,15 +3,12 @@ import { isParameterObject } from './isParameterObject';
 import Span from './Span';
 
 const EndpointDetails = ({ operations }: EndpointDetailsProps) => {
-  console.log(operations);
-
   return (
     <>
       {operations.map((operation) => {
         const key = crypto.randomUUID();
         const OperationDescription = operation.operation.description;
         const OperationParameters = operation.operation.parameters;
-        console.log(OperationParameters);
 
         return (
           <div className="text-[#8b949e]" key={key}>
