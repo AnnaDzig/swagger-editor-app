@@ -43,6 +43,12 @@ export type Operations = Operation[];
 export interface EndpointDetailsProps {
   operations: Operations;
 }
+
+export interface ParametersProps {
+  operationParameters:
+    (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[] | undefined;
+}
+
 export interface SpanProps {
   children: ReactNode;
   className?: string;
@@ -50,4 +56,9 @@ export interface SpanProps {
   color?: string;
   borderColor?: string;
   bg?: string;
+}
+
+export interface SectionProps {
+  title: string;
+  parameters?: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
 }
