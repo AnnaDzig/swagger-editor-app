@@ -75,7 +75,7 @@ const SwaggerViewerBody = ({
                           className="border border-[#30363D] rounded-md overflow-hidden"
                           key={key}
                         >
-                          <Accordion type="single" collapsible>
+                          <Accordion type="multiple">
                             <AccordionItem className="px-0" value={`item-${i}`}>
                               <AccordionTrigger className="hover:no-underline hover:bg-[#1B1F26]">
                                 <div className="flex w-full items-center justify-between pr-4 px-4">
