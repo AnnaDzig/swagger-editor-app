@@ -5,10 +5,11 @@ import Responses from './Responses';
 const EndpointDetails = ({ operation }: EndpointDetailsProps) => {
   console.log('operation', operation);
 
-  const key = crypto.randomUUID();
   const operationDescription = operation.description;
   const operationParameters = operation.parameters;
   const operationResponses = operation.responses;
+
+  const key = `${operation.summary}-${operation.description}`;
 
   console.log('operation: ', operation);
   return (
