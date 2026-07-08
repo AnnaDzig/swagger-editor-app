@@ -1,9 +1,9 @@
 import { ParametersProps } from '@/types/SwaggerViewer';
-import Span from './Span';
-import { isParameterObject } from './isParameterObject';
+import Span from '../Span';
+import { isParameterObject } from '../isParameterObject';
 
 const Parameters = ({ operationParameters }: ParametersProps) => {
-  console.log(operationParameters);
+  console.log('operationParameters', operationParameters);
   return (
     <section className="flex flex-col gap-2 text-[#8b949e]">
       <h4 className="text-[10px] font-semibold uppercase tracking-widest">

@@ -10,7 +10,7 @@ import { getOperations } from './extractViewerData';
 import getColor from './getColor';
 import NoEndpoints from './NoEndpoints';
 import { groupByTag } from './groupByTag';
-import EndpointDetails from './EndpointDetails';
+import EndpointDetails from './EndpointDetails/EndpointDetails';
 
 const SwaggerViewerBody = ({
   activeTag,

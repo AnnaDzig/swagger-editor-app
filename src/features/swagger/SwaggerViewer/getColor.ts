@@ -29,3 +29,21 @@ const getColor = (method: string) => {
 };
 
 export default getColor;
+
+export const getColorResponse = (status: string) => {
+  let statusColor = '#4BB658';
+
+  switch (status) {
+    case '404':
+      statusColor = '#C49B3B';
+      break;
+
+    default:
+      statusColor = '#4BB658';
+      break;
+  }
+
+  return {
+    statusColor,
+  };
+};
