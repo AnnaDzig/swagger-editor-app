@@ -13,6 +13,11 @@ const Parameters = ({ operationParameters }: ParametersProps) => {
         {operationParameters?.filter(isParameterObject).map((parameter) => {
           console.log('parameter: ', parameter);
 
+          const type =
+            parameter.schema && 'type' in parameter.schema
+              ? parameter.schema.type
+              : 'unknown';
+
           return (
             <li
               className="flex justify-between items-center py-2.5 px-3 even:bg-[#161B22] odd:bg-[#0D1117]"
@@ -23,7 +28,7 @@ const Parameters = ({ operationParameters }: ParametersProps) => {
                   {parameter.name}
                 </p>
                 <p className="flex items-center gap-3">
-                  <Span>{typeof parameter.name}</Span>
+                  <Span>{type}</Span>
                   <Span color="#8b949e" borderColor="#232933" bg="#12161D">
                     {parameter.required ? 'required' : 'optional'}
                   </Span>
