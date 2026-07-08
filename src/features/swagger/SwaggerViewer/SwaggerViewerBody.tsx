@@ -7,10 +7,10 @@ import {
 } from './Accordion';
 import { SwaggerViewerBodyProps } from '@/types/SwaggerViewer';
 import { getOperations } from './extractViewerData';
-import getColor from './getColor';
 import NoEndpoints from './NoEndpoints';
 import { groupByTag } from './groupByTag';
 import EndpointDetails from './EndpointDetails/EndpointDetails';
+import { getMethodColor } from './getColor';
 
 const SwaggerViewerBody = ({
   activeTag,
@@ -67,7 +67,7 @@ const SwaggerViewerBody = ({
                       const key = `${method}-${path}`;
 
                       const { methodBgColor, methodBorderColor } =
-                        getColor(method);
+                        getMethodColor(method);
 
                       return (
                         <li

@@ -1,4 +1,4 @@
-const getColor = (method: string) => {
+export const getMethodColor = (method: string) => {
   let methodBgColor = '#1D293A';
   let methodBorderColor = '#203A60';
 
@@ -28,9 +28,7 @@ const getColor = (method: string) => {
   };
 };
 
-export default getColor;
-
-export const getColorResponse = (status: string) => {
+export const getResponseColor = (status: string) => {
   let statusColor = '#4BB658';
 
   switch (status) {

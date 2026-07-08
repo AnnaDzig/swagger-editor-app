@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from 'openapi-types';
 import Span from '../Span';
 import { isResponseObject } from '../isResponseObject';
-import { getColorResponse } from '../getColor';
+import { getResponseColor } from '../getColor';
 
 interface ResponseProps {
   operationResponses: OpenAPIV3.ResponsesObject;
@@ -24,7 +24,7 @@ const Responses = ({ operationResponses }: ResponseProps) => {
               return null;
             }
 
-            const { statusColor } = getColorResponse(status);
+            const { statusColor } = getResponseColor(status);
 
             console.log('response', response);
             return (
