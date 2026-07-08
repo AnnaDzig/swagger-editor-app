@@ -41,7 +41,7 @@ export type Operation = {
 export type Operations = Operation[];
 
 export interface EndpointDetailsProps {
-  operations: Operations;
+  operation: OpenAPIV3.OperationObject;
 }
 
 export interface ParametersProps {

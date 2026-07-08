@@ -64,6 +64,7 @@ const SwaggerViewerBody = ({
                       const method = operation.method.toUpperCase();
                       const path = operation.path;
                       const summary = operation.operation.summary;
+
                       const key = `${method}-${path}`;
 
                       const { methodBgColor, methodBorderColor } =
@@ -96,7 +97,9 @@ const SwaggerViewerBody = ({
                                 </div>
                               </AccordionTrigger>
                               <AccordionContent className="hover:no-underline hover:bg-[#1B1F26] border-t border-[#30363D] px-4">
-                                <EndpointDetails operations={operations} />
+                                <EndpointDetails
+                                  operation={operation.operation}
+                                />
                               </AccordionContent>
                             </AccordionItem>
                           </Accordion>

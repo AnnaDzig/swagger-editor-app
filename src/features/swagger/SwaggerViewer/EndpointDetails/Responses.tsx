@@ -2,6 +2,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import Span from '../Span';
 import { isResponseObject } from '../isResponseObject';
 import { getResponseColor } from '../getColor';
+import TryItOut from './TryItOut';
 
 interface ResponseProps {
   operationResponses: OpenAPIV3.ResponsesObject;
@@ -45,6 +46,8 @@ const Responses = ({ operationResponses }: ResponseProps) => {
             );
           })}
       </ul>
+
+      <TryItOut />
     </section>
   );
 };
