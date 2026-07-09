@@ -29,13 +29,26 @@ const Parameters = ({ operationParameters }: ParametersProps) => {
                 </p>
                 <p className="flex items-center gap-3">
                   <Span>{type}</Span>
-                  <Span color="#8b949e" borderColor="#232933" bg="#12161D">
+                  <Span borderColor="#232933" bg="#12161D">
                     {parameter.required ? 'required' : 'optional'}
+                  </Span>
+                  <Span
+                    fontSize="12px"
+                    color="#8b949e"
+                    borderColor="transparent"
+                    bg="transparent"
+                  >
+                    {parameter.description}
                   </Span>
                 </p>
               </div>
               <p>
-                <Span color="#8b949e" borderColor="#232933" bg="#12161D">
+                <Span
+                  className="text"
+                  color="#8b949e"
+                  borderColor="#232933"
+                  bg="#12161D"
+                >
                   {parameter.in}
                 </Span>
               </p>
