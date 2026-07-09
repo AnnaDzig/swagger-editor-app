@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -48,6 +46,24 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-app-background: var(--app-background);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-hover: var(--app-surface-hover);
+  --color-app-border: var(--app-border);
+
+  --color-app-primary: var(--app-primary);
+  --color-app-primary-hover: var(--app-primary-hover);
+  --color-app-execute: var(--app-execute);
+  --color-app-execute-hover: var(--app-execute-hover);
+
+  --color-app-success: var(--app-success);
+  --color-app-error: var(--app-error);
+  --color-app-warning: var(--app-warning);
+  --color-app-info: var(--app-info);
+
+  --color-code-keyword: var(--code-keyword);
+  --color-code-string: var(--code-string);
+  --color-code-number: var(--code-number);
 }
 
 :root {
@@ -83,6 +99,24 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --app-background: #0b0e14;
+  --app-surface: #161b22;
+  --app-surface-hover: #1c2128;
+  --app-border: #30363d;
+
+  --app-primary: #6366f1;
+  --app-primary-hover: #818cf8;
+  --app-execute: #10b981;
+  --app-execute-hover: #34d399;
+
+  --app-success: #10b981;
+  --app-error: #f85149;
+  --app-warning: #d29922;
+  --app-info: #388bfd;
+
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #d2a8ff;
 }
 
 .dark {
