@@ -6,8 +6,11 @@ import {
 } from '@/components/ui/tooltip';
 import ValidateStatus from './ValidateStatus';
 
-export default function Header() {
-  const schemaLength = 243;
+interface HeaderProps {
+  lineCount: number;
+}
+
+export default function EditorHeader({ lineCount }: HeaderProps) {
   return (
     <div className="flex items-center gap-3 px-4 py-3 justify-between">
       <div className="rounded-xl border border-slate-800 bg-slate-900 p-1 md:flex">
@@ -16,8 +19,8 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-5">
-        <ValidateStatus isValid={false} />
-        <span>{schemaLength}L</span>
+        <ValidateStatus isValid={true} />
+        <span>{lineCount}L</span>
 
         <Tooltip>
           <TooltipTrigger asChild>
