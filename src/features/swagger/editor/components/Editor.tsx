@@ -13,7 +13,11 @@ export default function Editor() {
   const [lineCount, setLineCount] = useState<number>(0);
   return (
     <section className="flex flex-col bg-background h-full min-h-120 md:min-h-0">
-      <EditorHeader lineCount={lineCount} />
+      <EditorHeader
+        lineCount={lineCount}
+        onFormatChange={setFormat}
+        format={format}
+      />
       <Separator className="m-0 p-0" />
       <div className="flex-1 h-full">
         <MonacoEditor
