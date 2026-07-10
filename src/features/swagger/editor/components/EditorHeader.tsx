@@ -11,12 +11,14 @@ interface HeaderProps {
   lineCount: number;
   format: SchemaFormat;
   onFormatChange: (format: 'yaml' | 'json') => void;
+  isValid: boolean;
 }
 
 export default function EditorHeader({
   lineCount,
   format,
   onFormatChange,
+  isValid,
 }: HeaderProps) {
   return (
     <div className="flex items-center gap-3 px-4 py-3 justify-between">
@@ -36,7 +38,7 @@ export default function EditorHeader({
       </div>
 
       <div className="flex items-center gap-5">
-        <ValidateStatus isValid={true} />
+        <ValidateStatus isValid={isValid} />
         <span>{lineCount}L</span>
 
         <Tooltip>
