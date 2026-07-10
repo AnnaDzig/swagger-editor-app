@@ -1,6 +1,8 @@
 import { EndpointDetailsProps } from '@/types/SwaggerViewer';
 import Parameters from './Parameters';
-import Responses from './Responses';
+import Responses from './Responses/Responses';
+import ResponseDetails from './Responses/ResponseDetails';
+import TryItOut from './TryItOut';
 
 const EndpointDetails = ({ operation }: EndpointDetailsProps) => {
   console.log('operation', operation);
@@ -19,6 +21,8 @@ const EndpointDetails = ({ operation }: EndpointDetailsProps) => {
 
         <Parameters operationParameters={operationParameters} />
         <Responses operationResponses={operationResponses} />
+        <ResponseDetails operationResponses={operationResponses} />
+        <TryItOut />
       </div>
     </>
   );

@@ -29,19 +29,27 @@ export const getMethodColor = (method: string) => {
 };
 
 export const getResponseColor = (status: string) => {
-  let statusColor = '#4BB658';
+  let statusColor = '#B38F37';
+  let statusBgColor = '#0D1117';
+  let statusBorderColor = '#30363D';
 
   switch (status) {
-    case '404':
-      statusColor = '#C49B3B';
+    case '200':
+      statusColor = '#54CD61';
+      statusBgColor = '#1C2128';
+      statusBorderColor = '#2A2E4D';
       break;
 
     default:
-      statusColor = '#4BB658';
+      statusColor = '#C49B3B';
+      statusBgColor = '#0D1117';
+      statusBorderColor = '#30363D';
       break;
   }
 
   return {
     statusColor,
+    statusBgColor,
+    statusBorderColor,
   };
 };

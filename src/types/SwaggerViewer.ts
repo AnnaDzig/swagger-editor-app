@@ -49,6 +49,14 @@ export interface ParametersProps {
     (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[] | undefined;
 }
 
+export interface ResponseProps {
+  operationResponses: OpenAPIV3.ResponsesObject;
+}
+
+export interface ResponseDetailsProps {
+  operationResponses: OpenAPIV3.ResponsesObject;
+}
+
 export interface SpanProps {
   children: ReactNode;
   className?: string;
@@ -61,4 +69,11 @@ export interface SpanProps {
 export interface SectionProps {
   title: string;
   parameters?: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
+}
+
+export interface SpoilerProps {
+  successCode: string;
+  contentSchema: string;
+  applicationType: string;
+  contentExample: string;
 }
