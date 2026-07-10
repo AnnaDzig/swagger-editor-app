@@ -7,6 +7,7 @@ import { useState } from 'react';
 import EditorHeader from './EditorHeader';
 import MonacoEditor from './MonacoEditor';
 import StatusBar from './StatusBar';
+import detectedFormat from './utils/detectedFormat';
 
 export default function Editor() {
   const [value, setValue] = useState<string>(MOCK_SCHEMA_YAML);
@@ -28,6 +29,14 @@ export default function Editor() {
     }
   };
 
+  const handleValueChange = (newValue: string) => {
+    setValue(newValue);
+    const detected = detectedFormat(newValue);
+    if (detected !== format) {
+      setFormat(detected);
+    }
+  };
+
   return (
     <section className="flex flex-col bg-background h-full min-h-120 md:min-h-0">
       <EditorHeader
@@ -40,7 +49,7 @@ export default function Editor() {
         <MonacoEditor
           language={format}
           value={value}
-          onChange={setValue}
+          onChange={handleValueChange}
           onLineCountChange={setLineCount}
         />
       </div>
