@@ -9,3 +9,20 @@ export interface SwaggerSchemaState {
   isValid: boolean;
   error: string | null;
 }
+
+export interface SavedUserSchema {
+  id: string;
+  name: string;
+  content: string;
+  format: SchemaFormat;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export type CreateUserSchemaInput = {
+  name: string;
+  content: string;
+  format: SchemaFormat;
+};
+
+export type UpdateUserSchemaInput = Partial<CreateUserSchemaInput>;
