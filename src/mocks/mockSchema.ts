@@ -359,4 +359,3 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
 };
 
 export const MOCK_SCHEMA_YAML = dump(MOCK_SCHEMA);
-export const MOCK_SCHEMA_JSON = JSON.stringify(MOCK_SCHEMA, null, 2);
