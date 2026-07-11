@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react';
 import EditorHeader from './EditorHeader';
 import MonacoEditor from './MonacoEditor';
 import StatusBar from './StatusBar';
-import detectedFormat from './utils/detectedFormat';
-import validateSchema from './utils/validateSchema';
+import detectedFormat from '../utils/detectedFormat';
+import validateSchema from '../utils/validateSchema';
 
 export default function Editor() {
   const [value, setValue] = useState<string>(MOCK_SCHEMA_YAML);
