@@ -33,6 +33,7 @@ export default function MonacoEditor({
 
   return (
     <Editor
+      className="px-4"
       height="100%"
       language={language}
       value={value}
