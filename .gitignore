@@ -12,6 +12,4 @@ coverage
 .DS_Store
 .vscode/
 .qodo/
-CLAUDE.md
-AGENTS.md
 firebase-login-response.json
