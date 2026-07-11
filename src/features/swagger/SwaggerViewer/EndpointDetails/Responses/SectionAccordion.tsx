@@ -41,9 +41,11 @@ const SectionAccordion = ({
           >
             {title}
           </span>
-          <Span color="#8b949e" borderColor="#232933" bg="#12161D">
-            {value}
-          </Span>
+          {value && (
+            <Span color="#8b949e" borderColor="#232933" bg="#12161D">
+              {value}
+            </Span>
+          )}
         </div>
 
         {badge && (

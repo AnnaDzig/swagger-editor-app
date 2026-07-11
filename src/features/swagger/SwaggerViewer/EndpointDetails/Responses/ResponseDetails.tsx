@@ -34,7 +34,7 @@ const ResponseDetails = ({ operationResponses }: ResponseDetailsProps) => {
 
   return (
     <Spoiler
-      successCode={successCode}
+      successFormat={successCode}
       contentSchema={contentSchema}
       applicationType={applicationType}
       contentExample={contentExample}

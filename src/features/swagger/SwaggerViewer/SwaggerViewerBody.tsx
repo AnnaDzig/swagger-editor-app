@@ -67,7 +67,7 @@ const SwaggerViewerBody = ({
 
                       const key = `${method}-${path}`;
 
-                      const { methodBgColor, methodBorderColor } =
+                      const { methodBgColor, methodBorderColor, methodColor } =
                         getMethodColor(method);
 
                       return (
@@ -81,11 +81,12 @@ const SwaggerViewerBody = ({
                                 <div className="flex w-full items-center justify-between pr-4 px-4">
                                   <p className="flex items-center gap-3">
                                     <span
-                                      className="flex justify-center items-center w-[52] h-[25] border rounded"
+                                      className="flex justify-center items-center h-[25] font-semibold text-[11px] px-2 py-1 min-w-13.5 tracking-wider border rounded"
 
                                       style={{
                                         backgroundColor: methodBgColor,
                                         borderColor: methodBorderColor,
+                                        color: methodColor,
                                       }}
                                     >
                                       {method}
@@ -96,7 +97,7 @@ const SwaggerViewerBody = ({
                                   <p>{summary}</p>
                                 </div>
                               </AccordionTrigger>
-                              <AccordionContent className="hover:no-underline hover:bg-[#1B1F26] border-t border-[#30363D] px-4">
+                              <AccordionContent className="hover:no-underline border-t border-[#30363D] px-4">
                                 <EndpointDetails
                                   operation={operation.operation}
                                 />

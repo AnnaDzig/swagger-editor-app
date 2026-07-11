@@ -49,6 +49,11 @@ export interface ParametersProps {
     (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[] | undefined;
 }
 
+export interface RequestBodyProps {
+  operationRequestBody:
+    OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject | undefined;
+}
+
 export interface ResponseProps {
   operationResponses: OpenAPIV3.ResponsesObject;
 }
@@ -72,7 +77,7 @@ export interface SectionProps {
 }
 
 export interface SpoilerProps {
-  successCode: string;
+  successFormat: string;
   contentSchema: string;
   applicationType: string;
   contentExample: string;

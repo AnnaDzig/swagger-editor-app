@@ -11,8 +11,6 @@ const Parameters = ({ operationParameters }: ParametersProps) => {
 
       <ul className="border border-[#30363D] rounded-md divide-y divide-[#30363D]">
         {operationParameters?.filter(isParameterObject).map((parameter) => {
-          console.log('parameter: ', parameter);
-
           const type =
             parameter.schema && 'type' in parameter.schema
               ? parameter.schema.type

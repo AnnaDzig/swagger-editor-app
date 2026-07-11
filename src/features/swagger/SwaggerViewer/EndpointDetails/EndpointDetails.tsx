@@ -1,27 +1,32 @@
 import { EndpointDetailsProps } from '@/types/SwaggerViewer';
 import Parameters from './Parameters';
 import Responses from './Responses/Responses';
-import ResponseDetails from './Responses/ResponseDetails';
 import TryItOut from './TryItOut';
+import RequestBody from './Request/RequestBody';
 
 const EndpointDetails = ({ operation }: EndpointDetailsProps) => {
-  console.log('operation', operation);
-
   const operationDescription = operation.description;
   const operationParameters = operation.parameters;
   const operationResponses = operation.responses;
+  const operationRequestBody = operation.requestBody;
 
-  const key = `${operation.summary}-${operation.description}`;
-
-  console.log('operation: ', operation);
   return (
     <>
-      <div className="flex flex-col gap-3.5 text-[#8b949e]" key={key}>
+      <div className="flex flex-col gap-3.5 text-[#8b949e]">
         <p className="text-[13px] mt-3">{operationDescription}</p>
 
-        <Parameters operationParameters={operationParameters} />
-        <Responses operationResponses={operationResponses} />
-        <ResponseDetails operationResponses={operationResponses} />
+        {operationParameters && (
+          <Parameters operationParameters={operationParameters} />
+        )}
+
+        {operationRequestBody && (
+          <RequestBody operationRequestBody={operationRequestBody} />
+        )}
+
+        {operationResponses && (
+          <Responses operationResponses={operationResponses} />
+        )}
+
         <TryItOut />
       </div>
     </>

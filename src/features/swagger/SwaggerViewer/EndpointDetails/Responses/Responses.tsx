@@ -2,10 +2,9 @@ import Span from '../../Span';
 import { isResponseObject } from '../../isResponseObject';
 import { getResponseColor } from '../../getColor';
 import { ResponseProps } from '@/types/SwaggerViewer';
+import ResponseDetails from './ResponseDetails';
 
 const Responses = ({ operationResponses }: ResponseProps) => {
-  console.log('operationResponses', operationResponses);
-
   return (
     <section className="flex flex-col gap-2 text-[#8b949e]">
       <h4 className="text-[10px] font-semibold uppercase tracking-widest">
@@ -23,7 +22,6 @@ const Responses = ({ operationResponses }: ResponseProps) => {
             const { statusColor, statusBgColor, statusBorderColor } =
               getResponseColor(status);
 
-            console.log('response', response);
             return (
               <li key={response.description}>
                 <div className="flex items-center">
@@ -50,6 +48,8 @@ const Responses = ({ operationResponses }: ResponseProps) => {
             );
           })}
       </ul>
+
+      <ResponseDetails operationResponses={operationResponses} />
     </section>
   );
 };
