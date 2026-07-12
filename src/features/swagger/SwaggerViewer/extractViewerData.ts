@@ -2,7 +2,17 @@ import type { OpenAPIV3 } from 'openapi-types';
 
 import { HTTP_METHODS } from './http-methods';
 
-const extractViewerData = (schema: OpenAPIV3.Document) => {
+const extractViewerData = (schema: OpenAPIV3.Document | null) => {
+  if (!schema) {
+    return {
+      title: '',
+      version: '',
+      servers: [],
+      tags: [],
+      endpointCount: 0,
+    };
+  }
+
   const title = schema.info.title;
   const version = schema.info.version;
   const servers = schema.servers?.map((server) => server.url);
@@ -30,7 +40,10 @@ const extractViewerData = (schema: OpenAPIV3.Document) => {
   };
 };
 
-export function getOperations(schema: OpenAPIV3.Document) {
+export function getOperations(schema: OpenAPIV3.Document | null) {
+  if (!schema) {
+    return [];
+  }
   return Object.entries(schema.paths).flatMap(([path, pathItem]) =>
     HTTP_METHODS.flatMap((method) => {
       if (!pathItem) {

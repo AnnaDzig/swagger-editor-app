@@ -1,5 +1,5 @@
 'use client';
-import useOrientation from '@/shared/hooks/useOrientation';
+import useOrientation from '@/features/swagger/editor/hooks/useOrientation';
 import Editor from './editor/components/Editor';
 import SwaggerViewer from './SwaggerViewer/SwaggerViewer';
 
