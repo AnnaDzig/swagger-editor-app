@@ -7,8 +7,12 @@ import './globals.css';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const metadata: Metadata = {
-  title: 'Swagger/OpenAPI UI',
-  description: 'OpenAPI editor, viewer, and REST client',
+  title: {
+    default: 'Swagger/OpenAPI UI',
+    template: '%s | ApiFlux',
+  },
+  description:
+    'Edit, explore, and test OpenAPI specifications in one workspace.',
 };
 
 type RootLayoutProps = {
