@@ -9,12 +9,14 @@ import MonacoEditor from './MonacoEditor';
 import StatusBar from './StatusBar';
 import detectedFormat from '../utils/detectedFormat';
 import validateSchema from '../utils/validateSchema';
+import { useAppStore } from '@/store/app-store';
 
 export default function Editor() {
   const [value, setValue] = useState<string>(MOCK_SCHEMA_YAML);
   const [format, setFormat] = useState<SchemaFormat>('yaml');
   const [lineCount, setLineCount] = useState<number>(0);
   const [isValid, setIsValid] = useState<boolean>(false);
+  const setSchema = useAppStore((state) => state.setSchema);
 
   const handleFormatChange = (newFormat: SchemaFormat) => {
     try {
@@ -43,13 +45,24 @@ export default function Editor() {
     const validate = async () => {
       const result = await validateSchema(value, format);
       setIsValid(result);
+      setSchema({
+        rawContent: value,
+        parsedContent: result
+          ? format === 'yaml'
+            ? load(value)
+            : JSON.parse(value)
+          : null,
+        format,
+        isValid: result,
+        error: result ? null : 'Invalid schema',
+      });
     };
     const debounce = setTimeout(validate, 700);
 
     return () => {
       clearTimeout(debounce);
     };
-  }, [value, format]);
+  }, [value, format, setSchema]);
 
   return (
     <section className="flex flex-col bg-background h-full min-h-120 md:min-h-0">

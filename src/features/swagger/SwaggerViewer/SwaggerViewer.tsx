@@ -1,14 +1,16 @@
 'use client';
 
-import { MOCK_SCHEMA } from '@/mocks/mockSchema';
-import SwaggerViewerHeader from './SwaggerViewerHeader';
-import extractViewerData from './extractViewerData';
+import { useAppStore } from '@/store/app-store';
+import { OpenAPIV3 } from 'openapi-types';
 import { useState, type ChangeEvent } from 'react';
 import SwaggerViewerBody from './SwaggerViewerBody';
+import SwaggerViewerHeader from './SwaggerViewerHeader';
+import extractViewerData from './extractViewerData';
 
 const SwaggerViewer = () => {
   const [searchTerm, setApiSearchTerm] = useState<string>('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const schema = useAppStore((state) => state.schema);
 
   const {
     title,
@@ -16,7 +18,7 @@ const SwaggerViewer = () => {
     servers = [],
     tags,
     endpointCount,
-  } = extractViewerData(MOCK_SCHEMA);
+  } = extractViewerData(schema.parsedContent);
 
   const [activeServer, setActiveServer] = useState(servers[0] ?? '');
 
@@ -56,7 +58,7 @@ const SwaggerViewer = () => {
       <SwaggerViewerBody
         activeTag={activeTag}
         activeEndpoint={searchTerm}
-        schema={MOCK_SCHEMA}
+        schema={schema.parsedContent as OpenAPIV3.Document}
         onClearSearchField={handleClearSearchField}
         onSetActiveTag={handleActiveTag}
       />
