@@ -3,6 +3,7 @@ import Parameters from './Parameters';
 import Responses from './Responses/Responses';
 import TryItOut from './TryItOut/TryItOut';
 import RequestBody from './Request/RequestBody';
+import { useState } from 'react';
 
 const EndpointDetails = ({
   operation,
@@ -14,6 +15,12 @@ const EndpointDetails = ({
   const operationParameters = operation.parameters;
   const operationResponses = operation.responses;
   const operationRequestBody = operation.requestBody;
+
+  const [execute, setExecute] = useState<unknown>();
+
+  const handleResultExecute = (result: unknown) => {
+    setExecute(result);
+  };
 
   console.log('operation: ', operation);
   console.log('operationParameters: ', operationParameters);
@@ -44,6 +51,7 @@ const EndpointDetails = ({
           method={method}
           activeServer={activeServer}
           endpointPath={endpointPath}
+          onResultExecute={handleResultExecute}
         />
       </div>
     </>

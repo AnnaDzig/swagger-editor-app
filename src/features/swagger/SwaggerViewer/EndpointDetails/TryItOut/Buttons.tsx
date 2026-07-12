@@ -1,13 +1,41 @@
 import { Button } from '@/components/ui/button';
 import { executeProxyRequest } from '@/features/api/client/proxy-client';
 import { Play, RotateCcw, Terminal } from 'lucide-react';
+import buildRequestUrl from './buildRequestUrl';
+import { ButtonsPops } from '@/types/SwaggerViewer';
 
-const Buttons = () => {
+const Buttons = ({
+  activeServer,
+  queryParameters,
+  endpointPath,
+  method,
+  headers,
+  body,
+  onResultExecute,
+}: ButtonsPops) => {
+  const { requestUrl } = buildRequestUrl(
+    activeServer,
+    endpointPath,
+    queryParameters,
+  );
+
+  const handleExecute = async () => {
+    const result = await executeProxyRequest({
+      endpointUrl: requestUrl,
+      method: method,
+      headers: headers,
+      body: body,
+    });
+
+    onResultExecute(result);
+  };
+
   return (
     <div className="flex gap-1.5">
       <Button
         size="lg"
         className="text-white font-semibold bg-[#12CB8E] rounded-sm hover:bg-[#1ad798] px-3 py-2 cursor-pointer"
+        onClick={handleExecute}
       >
         <Play className="size-3 fill-current" />
         Try it out

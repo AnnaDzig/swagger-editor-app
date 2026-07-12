@@ -15,6 +15,7 @@ const TryItOut = ({
   method,
   activeServer,
   endpointPath,
+  onResultExecute,
 }: TryItOutProps) => {
   const [body, setBody] = useState<string>(
     request ? getContentExample(request) : '',
@@ -40,6 +41,7 @@ const TryItOut = ({
     setQueryParameters(queryParameters);
   };
 
+  console.log('parameters: ', parameters);
   console.log('headers: ', headers);
   console.log('queryParameters: ', queryParameters);
 
@@ -77,9 +79,18 @@ const TryItOut = ({
           method={method}
           activeServer={activeServer}
           endpointPath={endpointPath}
+          queryParameters={queryParameters}
         />
 
-        <Buttons />
+        <Buttons
+          activeServer={activeServer}
+          queryParameters={queryParameters}
+          endpointPath={endpointPath}
+          method={method}
+          headers={headers}
+          body={body}
+          onResultExecute={onResultExecute}
+        />
       </div>
     </section>
   );

@@ -1,6 +1,9 @@
 import { OpenAPIV3 } from 'openapi-types';
 import { ChangeEvent, Dispatch, ReactNode, SetStateAction } from 'react';
 
+export type method =
+  'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
+
 export interface SwaggerViewerHeaderProps {
   title: string;
   version: string;
@@ -34,7 +37,7 @@ export interface Parameter {
 }
 
 export type Operation = {
-  method: string;
+  method: method;
   path: string;
   operation: OpenAPIV3.OperationObject;
 };
@@ -43,7 +46,7 @@ export type Operations = Operation[];
 
 export interface EndpointDetailsProps {
   operation: OpenAPIV3.OperationObject;
-  method: string;
+  method: method;
   activeServer: string;
   endpointPath: string;
 }
@@ -75,9 +78,10 @@ export interface TryItOutProps {
   parameters?: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
   request?: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
   responses?: OpenAPIV3.ResponsesObject;
-  method: string;
+  method: method;
   activeServer: string;
   endpointPath: string;
+  onResultExecute: (result: unknown) => void;
 }
 
 export interface RequestBodyProps {
@@ -115,11 +119,22 @@ export interface SpoilerProps {
 }
 
 export interface UrlPathProps {
-  method: string;
+  method: method;
   activeServer: string;
   endpointPath: string;
+  queryParameters: Record<string, string>;
 }
 
 export interface HeadersPops {
   onHeaders?: Dispatch<SetStateAction<Record<string, string>>>;
+}
+
+export interface ButtonsPops {
+  activeServer: string;
+  queryParameters: Record<string, string>;
+  endpointPath: string;
+  method: 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
+  headers: Record<string, string>;
+  body: string;
+  onResultExecute: (result: unknown) => void;
 }
