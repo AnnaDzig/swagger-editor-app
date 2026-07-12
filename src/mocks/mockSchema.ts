@@ -12,7 +12,7 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
 
   servers: [
     {
-      url: 'http://localhost:3000/api',
+      url: 'https://petstore3.swagger.io/api/v3',
       description: 'Local',
     },
     {

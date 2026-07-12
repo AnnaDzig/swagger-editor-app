@@ -2,7 +2,7 @@
 
 import { useAppStore } from '@/store/app-store';
 import { OpenAPIV3 } from 'openapi-types';
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import SwaggerViewerBody from './SwaggerViewerBody';
 import SwaggerViewerHeader from './SwaggerViewerHeader';
 import extractViewerData from './extractViewerData';
@@ -20,7 +20,20 @@ const SwaggerViewer = () => {
     endpointCount,
   } = extractViewerData(schema.parsedContent);
 
-  const [activeServer, setActiveServer] = useState(servers[0] ?? '');
+  const [activeServer, setActiveServer] = useState<string>(servers[0] ?? '');
+
+  const prevServersRef = useRef<string[]>(servers);
+
+  useEffect(() => {
+    const serversChanged =
+      servers.length !== prevServersRef.current.length ||
+      servers.some((server, i) => server !== prevServersRef.current[i]);
+
+    if (serversChanged) {
+      prevServersRef.current = servers;
+      setActiveServer(servers[0] ?? '');
+    }
+  }, [servers]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setApiSearchTerm(e.target.value);

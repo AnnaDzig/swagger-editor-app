@@ -81,7 +81,7 @@ export interface TryItOutProps {
   method: method;
   activeServer: string;
   endpointPath: string;
-  onResultExecute: (result: unknown) => void;
+  onResultExecute: (result: ApiResult) => void;
 }
 
 export interface RequestBodyProps {
@@ -129,12 +129,23 @@ export interface HeadersPops {
   onHeaders?: Dispatch<SetStateAction<Record<string, string>>>;
 }
 
-export interface ButtonsPops {
+export interface ButtonsProps {
   activeServer: string;
   queryParameters: Record<string, string>;
   endpointPath: string;
   method: 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
   headers: Record<string, string>;
   body: string;
-  onResultExecute: (result: unknown) => void;
+  onResultExecute: (result: ApiResult) => void;
+}
+
+export interface ApiResultAnalytics {
+  duration: number;
+}
+
+export interface ApiResult {
+  status: number;
+  headers: Record<string, string>;
+  analytics: ApiResultAnalytics;
+  data: unknown;
 }

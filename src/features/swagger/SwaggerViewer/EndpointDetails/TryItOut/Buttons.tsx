@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { executeProxyRequest } from '@/features/api/client/proxy-client';
 import { Play, RotateCcw, Terminal } from 'lucide-react';
 import buildRequestUrl from './buildRequestUrl';
-import { ButtonsPops } from '@/types/SwaggerViewer';
+import { ApiResult, ButtonsProps } from '@/types/SwaggerViewer';
 
 const Buttons = ({
   activeServer,
@@ -12,7 +12,7 @@ const Buttons = ({
   headers,
   body,
   onResultExecute,
-}: ButtonsPops) => {
+}: ButtonsProps) => {
   const { requestUrl } = buildRequestUrl(
     activeServer,
     endpointPath,
@@ -20,12 +20,17 @@ const Buttons = ({
   );
 
   const handleExecute = async () => {
-    const result = await executeProxyRequest({
+    const result = (await executeProxyRequest({
       endpointUrl: requestUrl,
-      method: method,
-      headers: headers,
-      body: body,
-    });
+      method,
+      headers,
+      body:
+        method === 'GET' || method === 'HEAD'
+          ? undefined
+          : body
+            ? JSON.parse(body)
+            : undefined,
+    })) as ApiResult;
 
     onResultExecute(result);
   };

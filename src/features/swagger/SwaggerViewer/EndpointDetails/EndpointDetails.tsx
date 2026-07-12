@@ -1,9 +1,11 @@
-import { EndpointDetailsProps } from '@/types/SwaggerViewer';
+import { ApiResult, EndpointDetailsProps } from '@/types/SwaggerViewer';
 import Parameters from './Parameters';
 import Responses from './Responses/Responses';
 import TryItOut from './TryItOut/TryItOut';
 import RequestBody from './Request/RequestBody';
 import { useState } from 'react';
+import Result from './Result/Result';
+import getResponsesData from './getResponsesData';
 
 const EndpointDetails = ({
   operation,
@@ -16,9 +18,9 @@ const EndpointDetails = ({
   const operationResponses = operation.responses;
   const operationRequestBody = operation.requestBody;
 
-  const [execute, setExecute] = useState<unknown>();
+  const [execute, setExecute] = useState<ApiResult>();
 
-  const handleResultExecute = (result: unknown) => {
+  const handleResultExecute = (result: ApiResult) => {
     setExecute(result);
   };
 
@@ -26,6 +28,9 @@ const EndpointDetails = ({
   console.log('operationParameters: ', operationParameters);
   console.log('operationResponses: ', operationResponses);
   console.log('operationRequestBody: ', operationRequestBody);
+
+  const { appType = 'application/json' } =
+    getResponsesData(operationResponses) ?? {};
 
   return (
     <>
@@ -53,6 +58,8 @@ const EndpointDetails = ({
           endpointPath={endpointPath}
           onResultExecute={handleResultExecute}
         />
+
+        <Result result={execute} appType={appType} />
       </div>
     </>
   );
