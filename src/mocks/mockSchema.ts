@@ -1,4 +1,5 @@
 import { OpenAPIV3 } from 'openapi-types';
+import { dump } from 'js-yaml';
 
 export const MOCK_SCHEMA: OpenAPIV3.Document = {
   openapi: '3.0.0',
@@ -409,3 +410,5 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
     },
   },
 };
+
+export const MOCK_SCHEMA_YAML = dump(MOCK_SCHEMA);

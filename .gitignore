@@ -14,3 +14,5 @@ coverage
 .qodo/
 CLAUDE.md
 AGENTS.md
+next-env.d.ts
+firebase-login-response.json
