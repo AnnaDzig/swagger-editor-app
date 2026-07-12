@@ -62,7 +62,7 @@ export default function Editor() {
     return () => {
       clearTimeout(debounce);
     };
-  }, [value, format]);
+  }, [value, format, setSchema]);
 
   return (
     <section className="flex flex-col bg-background h-full min-h-120 md:min-h-0">
