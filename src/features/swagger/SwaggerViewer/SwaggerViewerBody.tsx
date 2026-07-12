@@ -18,6 +18,7 @@ const SwaggerViewerBody = ({
   schema,
   onClearSearchField,
   onSetActiveTag,
+  activeServer,
 }: SwaggerViewerBodyProps) => {
   const operations = getOperations(schema);
 
@@ -100,6 +101,9 @@ const SwaggerViewerBody = ({
                               <AccordionContent className="hover:no-underline border-t border-[#30363D] px-4">
                                 <EndpointDetails
                                   operation={operation.operation}
+                                  method={method}
+                                  activeServer={activeServer}
+                                  endpointPath={path}
                                 />
                               </AccordionContent>
                             </AccordionItem>

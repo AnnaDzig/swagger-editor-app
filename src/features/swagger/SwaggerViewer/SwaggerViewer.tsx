@@ -59,6 +59,7 @@ const SwaggerViewer = () => {
         schema={MOCK_SCHEMA}
         onClearSearchField={handleClearSearchField}
         onSetActiveTag={handleActiveTag}
+        activeServer={activeServer}
       />
     </div>
   );
