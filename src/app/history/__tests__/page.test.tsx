@@ -1,24 +1,47 @@
 import { render, screen } from '@testing-library/react';
-import HistoryPage from '@/app/history/page';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/features/auth/components/private-route-guard', () => ({
-  PrivateRouteGuard: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="private-route-guard">{children}</div>
-  ),
+import HistoryPage from '../page';
+
+const mocks = vi.hoisted(() => ({
+  getSessionUser: vi.fn(),
+  getRequestHistory: vi.fn(),
 }));
 
-vi.mock('@/features/history/components/history-view', () => ({
-  HistoryView: () => <div data-testid="history-view">History view</div>,
+vi.mock('@/features/auth/server/get-session-user', () => ({
+  getSessionUser: mocks.getSessionUser,
+}));
+
+vi.mock('@/features/history/server/history-repository', () => ({
+  getRequestHistory: mocks.getRequestHistory,
 }));
 
 describe('HistoryPage', () => {
-  it('renders history page inside private route guard', () => {
-    render(<HistoryPage />);
+  beforeEach(() => {
+    vi.clearAllMocks();
 
-    expect(screen.getByTestId('private-route-guard')).toBeInTheDocument();
+    mocks.getSessionUser.mockResolvedValue({
+      uid: 'user-1',
+      email: 'user@example.com',
+    });
+
+    mocks.getRequestHistory.mockResolvedValue([]);
+  });
+
+  it('renders server-generated history page for an authenticated user', async () => {
+    const page = await HistoryPage();
+
+    render(page);
+
     expect(
-      screen.getByRole('heading', { name: /request history/i }),
+      screen.getByRole('heading', {
+        name: /request history/i,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByTestId('history-view')).toBeInTheDocument();
+
+    expect(screen.getByText(/no requests yet/i)).toBeInTheDocument();
+
+    expect(mocks.getSessionUser).toHaveBeenCalledOnce();
+    expect(mocks.getRequestHistory).toHaveBeenCalledWith('user-1');
   });
 });
