@@ -21,6 +21,9 @@ const TryItOut = ({
     request ? getContentExample(request) : '',
   );
   const [headers, setHeaders] = useState<Record<string, string>>({});
+  const [pathParameters, setPathParameters] = useState<Record<string, string>>(
+    {},
+  );
   const [queryParameters, setQueryParameters] = useState<
     Record<string, string>
   >({});
@@ -35,15 +38,27 @@ const TryItOut = ({
     setHeaders(headers);
   };
 
-  const handleQueryParameters: Dispatch<
+  const handlePathParameters: Dispatch<
     SetStateAction<Record<string, string>>
-  > = (queryParameters) => {
-    setQueryParameters(queryParameters);
+  > = (parameters) => {
+    setPathParameters(parameters);
   };
 
-  console.log('parameters: ', parameters);
-  console.log('headers: ', headers);
-  console.log('queryParameters: ', queryParameters);
+  const handleQueryParameters: Dispatch<
+    SetStateAction<Record<string, string>>
+  > = (parameters) => {
+    setQueryParameters(parameters);
+  };
+
+  const pathParameterDefinitions =
+    parameters?.filter(
+      (parameter) => 'in' in parameter && parameter.in === 'path',
+    ) ?? [];
+
+  const queryParameterDefinitions =
+    parameters?.filter(
+      (parameter) => 'in' in parameter && parameter.in === 'query',
+    ) ?? [];
 
   return (
     <section className="rounded-md border border-[#30363d] overflow-hidden">
@@ -54,14 +69,24 @@ const TryItOut = ({
       <div className="bg-[#0d1117] p-3 space-y-3">
         <div>
           <div className="space-y-2">
-            {parameters && parameters.length > 0 && (
+            {pathParameterDefinitions.length > 0 && (
+              <TryItOutContent
+                title="Path parameters"
+                parameters={pathParameterDefinitions}
+                query={pathParameters}
+                onQueryParameters={handlePathParameters}
+              />
+            )}
+
+            {queryParameterDefinitions.length > 0 && (
               <TryItOutContent
                 title="Query parameters"
-                parameters={parameters}
+                parameters={queryParameterDefinitions}
                 query={queryParameters}
                 onQueryParameters={handleQueryParameters}
               />
             )}
+
             {request && (
               <TryItOutContent
                 title="Request body"
@@ -79,11 +104,13 @@ const TryItOut = ({
           method={method}
           activeServer={activeServer}
           endpointPath={endpointPath}
+          pathParameters={pathParameters}
           queryParameters={queryParameters}
         />
 
         <Buttons
           activeServer={activeServer}
+          pathParameters={pathParameters}
           queryParameters={queryParameters}
           endpointPath={endpointPath}
           method={method}

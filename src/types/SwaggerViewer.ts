@@ -122,6 +122,7 @@ export interface UrlPathProps {
   method: method;
   activeServer: string;
   endpointPath: string;
+  pathParameters: Record<string, string>;
   queryParameters: Record<string, string>;
 }
 
@@ -132,6 +133,7 @@ export interface HeadersPops {
 export interface ButtonsProps {
   activeServer: string;
   queryParameters: Record<string, string>;
+  pathParameters: Record<string, string>;
   endpointPath: string;
   method: 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
   headers: Record<string, string>;

@@ -7,6 +7,7 @@ import { ApiResult, ButtonsProps } from '@/types/SwaggerViewer';
 const Buttons = ({
   activeServer,
   queryParameters,
+  pathParameters,
   endpointPath,
   method,
   headers,
@@ -16,6 +17,7 @@ const Buttons = ({
   const { requestUrl } = buildRequestUrl(
     activeServer,
     endpointPath,
+    pathParameters,
     queryParameters,
   );
 

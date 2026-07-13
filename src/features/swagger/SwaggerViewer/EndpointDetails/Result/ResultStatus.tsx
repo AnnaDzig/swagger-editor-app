@@ -7,6 +7,8 @@ const ResultStatus = ({
   status: number;
   duration: number;
 }) => {
+  if (!status) return;
+
   const { statusColor } = getResponseColor(status.toString());
 
   return (

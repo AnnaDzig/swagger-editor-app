@@ -60,16 +60,11 @@ const handleMount = (editor: Monaco.editor.IStandaloneCodeEditor) => {
 };
 
 const Result = ({ result, appType }: ResultProps) => {
-  console.log('result: ', result);
-
   if (!result) return;
 
-  const { status, headers, analytics } = result;
+  const { status, analytics, data } = result;
 
-  const editorValue =
-    typeof result.data === 'string'
-      ? result.data
-      : JSON.stringify(result.data, null, 2);
+  const responseBody = data ? JSON.stringify(data, null, 2) : '{}';
 
   return (
     <section className="rounded-md overflow-hidden">
@@ -88,7 +83,7 @@ const Result = ({ result, appType }: ResultProps) => {
           beforeMount={handleEditorWillMount}
           theme="swagger-dark"
           language="json"
-          value={editorValue}
+          value={responseBody}
           onMount={handleMount}
           options={{
             readOnly: true,

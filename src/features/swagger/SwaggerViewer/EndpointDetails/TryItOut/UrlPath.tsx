@@ -5,17 +5,19 @@ const UrlPath = ({
   method,
   activeServer,
   endpointPath,
+  pathParameters,
   queryParameters,
 }: UrlPathProps) => {
   const { methodColor } = getMethodColor(method);
 
-  const queryString = queryParameters
-    ? new URLSearchParams(
-        Object.entries(queryParameters).filter(([, value]) => value !== ''),
-      ).toString()
-    : '';
+  const queryString = new URLSearchParams(
+    Object.entries(queryParameters).filter(([, value]) => value.trim() !== ''),
+  ).toString();
 
-  console.log('queryParameters: ', queryParameters);
+  const parsedEndpointPath = endpointPath.replace(
+    /\{([^}]+)\}/g,
+    (_, parameterName) => pathParameters[parameterName] ?? `{${parameterName}}`,
+  );
 
   return (
     <div className="flex items-center gap-0 px-3 py-2 rounded-md bg-[#080B10] border border-[#30363d] font-mono text-[11px] overflow-x-auto whitespace-nowrap">
@@ -24,7 +26,7 @@ const UrlPath = ({
       </span>
       <span className="shrink-0 text-[#484f58]">{activeServer}</span>
       <span className="shrink-0 text-[#e6edf3]">
-        {!queryString && endpointPath}
+        {parsedEndpointPath}
         {queryString && `?${queryString}`}
       </span>
     </div>
