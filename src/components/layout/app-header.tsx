@@ -25,6 +25,7 @@ import { ROUTES } from '@/constants/routes';
 import { signOutUser } from '@/features/auth/api/auth-client';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/app-store';
+import { toast } from 'sonner';
 
 function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
   if (href === ROUTES.MAIN) {
@@ -49,6 +50,7 @@ export function AppHeader() {
   const user = useAppStore((state) => state.user);
   const isAuthLoading = useAppStore((state) => state.isAuthLoading);
   const setUser = useAppStore((state) => state.setUser);
+  const format = useAppStore((state) => state.schema.format);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -123,6 +125,7 @@ export function AppHeader() {
       router.push(ROUTES.MAIN);
     } catch {
       setSignOutError('Could not sign out. Please try again.');
+      toast.error('Failed to sign out.');
     } finally {
       setIsSigningOut(false);
     }
@@ -170,7 +173,9 @@ export function AppHeader() {
               ·
             </span>
 
-            <span className="shrink-0 font-medium text-app-primary">yaml</span>
+            <span className="shrink-0 font-medium text-app-primary">
+              {format}
+            </span>
           </div>
         </div>
 
