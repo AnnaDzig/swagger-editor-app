@@ -6,6 +6,7 @@ import {
 } from 'firebase/auth';
 
 import { firebaseAuth } from '@/lib/firebase/client';
+import { toast } from 'sonner';
 
 type AuthCredentials = {
   email: string;
@@ -43,9 +44,9 @@ export async function clearServerSession() {
 async function completeAuthentication(user: FirebaseUser) {
   try {
     await createServerSession(user);
-    return user;
   } catch (error) {
     await signOut(firebaseAuth);
+    toast.error('Failed to authenticate.');
     throw error;
   }
 }
@@ -81,8 +82,8 @@ export async function signOutUser() {
   ]);
 
   const hasFailure = results.some((result) => result.status === 'rejected');
-
   if (hasFailure) {
+    toast.error('Failed to sign out.');
     throw new Error('Could not complete sign out.');
   }
 }

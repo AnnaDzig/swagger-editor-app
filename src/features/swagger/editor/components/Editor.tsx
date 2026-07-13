@@ -11,6 +11,7 @@ import { useAppStore } from '@/store/app-store';
 import { SavedUserSchema, SchemaFormat } from '@/types/schema';
 import { dump, load } from 'js-yaml';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import detectedFormat from '../utils/detectedFormat';
 import validateSchema from '../utils/validateSchema';
 import EditorHeader from './EditorHeader';
@@ -41,6 +42,7 @@ export default function Editor() {
       setFormat(newFormat);
     } catch {
       setFormat(newFormat);
+      toast.error('Failed to format schema.');
     }
   };
 
@@ -93,7 +95,7 @@ export default function Editor() {
           setFormat(saved.format);
         }
       } catch {
-        console.error('Failed to load schemas.');
+        toast.error('Failed to load schemas.');
       }
     };
 
@@ -112,7 +114,7 @@ export default function Editor() {
       setValue(schema.content);
       setFormat(schema.format);
     } catch {
-      console.error('Failed to load schema.');
+      toast.error('Failed to load schema.');
     }
   };
 
@@ -126,6 +128,7 @@ export default function Editor() {
           content: value,
           format,
         });
+        toast.success('Schema updated successfully !');
       } else {
         const savedSchema = await createCurrentUserSchema({
           name: schema.parsedContent?.info.title ?? 'New Schema',
@@ -133,9 +136,10 @@ export default function Editor() {
           format,
         });
         setSchemaId(savedSchema.id);
+        toast.success('Schema saved successfully !');
       }
     } catch {
-      console.error('Failed to save schema.');
+      toast.error('Failed to save schemas.');
     }
   };
 
