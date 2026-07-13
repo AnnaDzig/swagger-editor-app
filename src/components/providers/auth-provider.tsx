@@ -1,7 +1,12 @@
 'use client';
 
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useEffect } from 'react';
+
+import {
+  clearServerSession,
+  syncServerSession,
+} from '@/features/auth/api/auth-client';
 import { firebaseAuth } from '@/lib/firebase/client';
 import { useAppStore } from '@/store/app-store';
 
@@ -14,22 +19,48 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const setIsAuthLoading = useAppStore((state) => state.setIsAuthLoading);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (firebaseUser) => {
-      if (!firebaseUser) {
-        setUser(null);
-        setIsAuthLoading(false);
-        return;
-      }
+    let isActive = true;
 
-      setUser({
-        uid: firebaseUser.uid,
-        email: firebaseUser.email ?? '',
-      });
+    const unsubscribe = onAuthStateChanged(
+      firebaseAuth,
+      async (firebaseUser) => {
+        try {
+          if (!firebaseUser) {
+            await clearServerSession();
 
-      setIsAuthLoading(false);
-    });
+            if (isActive) {
+              setUser(null);
+            }
 
-    return unsubscribe;
+            return;
+          }
+
+          await syncServerSession(firebaseUser);
+
+          if (isActive) {
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email ?? '',
+            });
+          }
+        } catch {
+          await signOut(firebaseAuth);
+
+          if (isActive) {
+            setUser(null);
+          }
+        } finally {
+          if (isActive) {
+            setIsAuthLoading(false);
+          }
+        }
+      },
+    );
+
+    return () => {
+      isActive = false;
+      unsubscribe();
+    };
   }, [setIsAuthLoading, setUser]);
 
   return <>{children}</>;

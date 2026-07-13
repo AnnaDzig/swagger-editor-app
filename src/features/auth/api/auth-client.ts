@@ -30,7 +30,7 @@ async function createServerSession(user: FirebaseUser) {
   }
 }
 
-async function clearServerSession() {
+export async function clearServerSession() {
   const response = await fetch('/api/auth/session', {
     method: 'DELETE',
   });
@@ -48,6 +48,10 @@ async function completeAuthentication(user: FirebaseUser) {
     await signOut(firebaseAuth);
     throw error;
   }
+}
+
+export async function syncServerSession(user: FirebaseUser) {
+  await createServerSession(user);
 }
 
 export async function signInWithEmail(values: AuthCredentials) {
@@ -71,6 +75,14 @@ export async function signUpWithEmail(values: AuthCredentials) {
 }
 
 export async function signOutUser() {
-  await clearServerSession();
-  await signOut(firebaseAuth);
+  const results = await Promise.allSettled([
+    clearServerSession(),
+    signOut(firebaseAuth),
+  ]);
+
+  const hasFailure = results.some((result) => result.status === 'rejected');
+
+  if (hasFailure) {
+    throw new Error('Could not complete sign out.');
+  }
 }
