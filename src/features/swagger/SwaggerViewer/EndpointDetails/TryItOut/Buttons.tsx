@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { executeProxyRequest } from '@/features/api/client/proxy-client';
-import { Check, Play, RotateCcw, Terminal } from 'lucide-react';
+import { Check, Play, Terminal } from 'lucide-react';
 import buildRequestUrl from './buildRequestUrl';
 import { ApiResult, ButtonsProps } from '@/types/SwaggerViewer';
 
@@ -64,13 +64,6 @@ const Buttons = ({
         <span style={{ color: isCurlCopied ? '#56d364' : 'inherit' }}>
           Generate cURL
         </span>
-      </Button>
-      <Button
-        size="lg"
-        className="text-[#8b949e] font-semibold bg-transparent rounded-sm hover:text-[#b5bdc7] hover:bg-transparent px-3 py-2 border border-[#30363d] hover:border-[#595e63] cursor-pointer"
-      >
-        <RotateCcw className="size-3" />
-        Try it out
       </Button>
     </div>
   );
