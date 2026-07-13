@@ -24,10 +24,11 @@ const Buttons = ({
   const handleExecute = async () => {
     const result = (await executeProxyRequest({
       endpointUrl: requestUrl,
-      method,
+      method: method.toUpperCase() as
+        'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT',
       headers,
       body:
-        method === 'GET' || method === 'HEAD'
+        method.toUpperCase() === 'GET' || method.toUpperCase() === 'HEAD'
           ? undefined
           : body
             ? JSON.parse(body)

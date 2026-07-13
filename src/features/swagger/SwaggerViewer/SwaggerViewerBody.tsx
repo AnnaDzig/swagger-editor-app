@@ -62,14 +62,15 @@ const SwaggerViewerBody = ({
 
                   <ul className="flex flex-col gap-1.5 ">
                     {operations.map((operation, i) => {
-                      const method = operation.method.toUpperCase();
+                      const method = operation.method;
+                      const methodLabel = method.toUpperCase();
                       const path = operation.path;
                       const summary = operation.operation.summary;
 
-                      const key = `${method}-${path}`;
+                      const key = `${methodLabel}-${path}`;
 
                       const { methodBgColor, methodBorderColor, methodColor } =
-                        getMethodColor(method);
+                        getMethodColor(methodLabel);
 
                       return (
                         <li
@@ -90,7 +91,7 @@ const SwaggerViewerBody = ({
                                         color: methodColor,
                                       }}
                                     >
-                                      {method}
+                                      {methodLabel}
                                     </span>{' '}
                                     {path}
                                   </p>

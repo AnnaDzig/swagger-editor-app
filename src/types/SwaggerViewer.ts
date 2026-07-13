@@ -2,7 +2,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { ChangeEvent, Dispatch, ReactNode, SetStateAction } from 'react';
 
 export type method =
-  'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
+  'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' | 'trace';
 
 export interface SwaggerViewerHeaderProps {
   title: string;
@@ -135,7 +135,7 @@ export interface ButtonsProps {
   queryParameters: Record<string, string>;
   pathParameters: Record<string, string>;
   endpointPath: string;
-  method: 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT';
+  method: method;
   headers: Record<string, string>;
   body: string;
   onResultExecute: (result: ApiResult) => void;

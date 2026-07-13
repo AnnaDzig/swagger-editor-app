@@ -24,11 +24,6 @@ const EndpointDetails = ({
     setExecute(result);
   };
 
-  console.log('operation: ', operation);
-  console.log('operationParameters: ', operationParameters);
-  console.log('operationResponses: ', operationResponses);
-  console.log('operationRequestBody: ', operationRequestBody);
-
   const { appType = 'application/json' } =
     getResponsesData(operationResponses) ?? {};
 
