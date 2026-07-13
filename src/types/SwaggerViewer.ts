@@ -139,6 +139,8 @@ export interface ButtonsProps {
   headers: Record<string, string>;
   body: string;
   onResultExecute: (result: ApiResult) => void;
+  onCopyCurl: () => void;
+  isCurlCopied: boolean;
 }
 
 export interface ApiResultAnalytics {

@@ -8,6 +8,9 @@ import UrlPath from './UrlPath';
 import Buttons from './Buttons';
 import { getContentExample } from './getContentExample';
 import Headers from './Headers';
+import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
+import buildRequestUrl from './buildRequestUrl';
+import { buildCurl } from '../../utils/buildCurl';
 
 const TryItOut = ({
   parameters,
@@ -27,6 +30,26 @@ const TryItOut = ({
   const [queryParameters, setQueryParameters] = useState<
     Record<string, string>
   >({});
+
+  const [isCurlCopied, copyCurl] = useCopyToClipboard();
+
+  const { requestUrl } = buildRequestUrl(
+    activeServer,
+    endpointPath,
+    pathParameters,
+    queryParameters,
+  );
+
+  const handleCopyCurl = () => {
+    const curlString = buildCurl({
+      method,
+      url: requestUrl,
+      body: body,
+      headers: headers,
+    });
+
+    copyCurl(curlString);
+  };
 
   const handleRequestBody = (value: string) => {
     setBody(value);
@@ -117,6 +140,8 @@ const TryItOut = ({
           headers={headers}
           body={body}
           onResultExecute={onResultExecute}
+          onCopyCurl={handleCopyCurl}
+          isCurlCopied={isCurlCopied}
         />
       </div>
     </section>
