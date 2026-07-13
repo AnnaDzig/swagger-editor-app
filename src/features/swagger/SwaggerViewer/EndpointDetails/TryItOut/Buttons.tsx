@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { executeProxyRequest } from '@/features/api/client/proxy-client';
-import { Check, Play, Terminal } from 'lucide-react';
+import { Check, LoaderCircle, Play, Terminal } from 'lucide-react';
+import { useState } from 'react';
 import buildRequestUrl from './buildRequestUrl';
 import { ApiResult, ButtonsProps } from '@/types/SwaggerViewer';
 
@@ -16,6 +17,8 @@ const Buttons = ({
   onCopyCurl,
   isCurlCopied,
 }: ButtonsProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { requestUrl } = buildRequestUrl(
     activeServer,
     endpointPath,
@@ -29,32 +32,47 @@ const Buttons = ({
       return;
     }
 
-    const result = (await executeProxyRequest({
-      endpointUrl: requestUrl,
-      method: method.toUpperCase() as
-        'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT',
-      headers,
-      body:
-        method.toUpperCase() === 'GET' || method.toUpperCase() === 'HEAD'
-          ? undefined
-          : body
-            ? JSON.parse(body)
-            : undefined,
-    })) as ApiResult;
-    console.log(requestUrl);
-    onResultExecute(result);
+    try {
+      setIsLoading(true);
+
+      const result = (await executeProxyRequest({
+        endpointUrl: requestUrl,
+        method: method.toUpperCase() as
+          'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT',
+        headers,
+        body:
+          method.toUpperCase() === 'GET' || method.toUpperCase() === 'HEAD'
+            ? undefined
+            : body
+              ? JSON.parse(body)
+              : undefined,
+      })) as ApiResult;
+
+      onResultExecute(result);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="flex gap-1.5">
       <Button
         size="lg"
-        className="text-white font-semibold bg-[#12CB8E] rounded-sm hover:bg-[#1ad798] px-3 py-2 cursor-pointer"
+        disabled={isLoading}
+        className="text-white font-semibold bg-[#12CB8E] rounded-sm hover:bg-[#1ad798] px-3 py-2 cursor-pointer disabled:opacity-70"
         onClick={handleExecute}
       >
-        <Play className="size-3 fill-current" />
-        Try it out
+        {isLoading ? (
+          <LoaderCircle className="size-4 animate-spin" />
+        ) : (
+          <Play className="size-3 fill-current" />
+        )}
+
+        {isLoading ? 'Loading...' : 'Try it out'}
       </Button>
+
       <Button
         variant="outline"
         size="lg"
@@ -66,6 +84,7 @@ const Buttons = ({
         ) : (
           <Terminal size={14} />
         )}
+
         <span style={{ color: isCurlCopied ? '#56d364' : 'inherit' }}>
           Generate cURL
         </span>
