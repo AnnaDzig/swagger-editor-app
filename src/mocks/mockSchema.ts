@@ -5,66 +5,58 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
   openapi: '3.0.0',
 
   info: {
-    title: 'PetStore API',
+    title: 'Fake Store API',
     version: '1.0.0',
-    description: 'Mock schema for Swagger Viewer',
+    description: 'Mock schema for Swagger Viewer based on Fake Store API',
   },
 
   servers: [
     {
-      url: 'http://localhost:3000/api',
-      description: 'Local',
-    },
-    {
-      url: 'https://api.petstore.com/v1',
+      url: 'https://fakestoreapi.com',
       description: 'Production',
     },
     {
-      url: 'https://staging.petstore.com/v1',
-      description: 'Staging',
+      url: 'http://localhost:3000/api',
+      description: 'Local',
     },
   ],
 
   tags: [
     {
+      name: 'Products',
+      description: 'Product management',
+    },
+    {
       name: 'Users',
-      description: 'Operations about users',
+      description: 'User management',
     },
     {
       name: 'Auth',
       description: 'Authentication',
     },
     {
-      name: 'Pets',
-      description: 'Pet management',
+      name: 'Categories',
+      description: 'Product categories',
     },
   ],
 
   paths: {
-    '/users/{id}': {
+    '/products': {
       get: {
-        tags: ['Users'],
-        summary: 'Get user by ID',
-        description: 'Returns user information',
+        tags: ['Products'],
+        summary: 'Get all products',
+        description: 'Returns a list of products',
 
         parameters: [
           {
-            name: 'id',
-            in: 'path',
-            required: true,
-            description: 'User ID',
-            schema: {
-              type: 'string',
-            },
-          },
-          {
-            name: 'expand',
+            name: 'limit',
             in: 'query',
             required: false,
+            description: 'Limit number of products',
             schema: {
-              type: 'boolean',
+              type: 'integer',
             },
-            example: true,
+            example: 5,
           },
           {
             name: 'X-Request-ID',
@@ -74,70 +66,218 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
               type: 'string',
             },
           },
-          {
-            name: 'session',
-            in: 'cookie',
-            required: false,
-            schema: {
-              type: 'string',
+        ],
+
+        responses: {
+          '200': {
+            description: 'Product list',
+
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Product',
+                  },
+                },
+
+                example: [
+                  {
+                    id: 1,
+                    title: 'Fjallraven Backpack',
+                    price: 109.95,
+                    category: 'men clothing',
+                  },
+                ],
+              },
             },
+          },
+        },
+      },
+
+      post: {
+        tags: ['Products'],
+        summary: 'Create product',
+        description: 'Creates a new product',
+
+        requestBody: {
+          required: true,
+
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/CreateProduct',
+              },
+
+              example: {
+                title: 'New product',
+                price: 20,
+                category: 'electronics',
+              },
+            },
+          },
+        },
+
+        responses: {
+          '201': {
+            description: 'Product created',
+          },
+        },
+      },
+    },
+
+    '/products/{id}': {
+      get: {
+        tags: ['Products'],
+        summary: 'Get product by ID',
+
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'Product identifier',
+            schema: {
+              type: 'integer',
+            },
+            example: 1,
           },
         ],
 
         responses: {
           '200': {
-            description: 'User found',
+            description: 'Product found',
+
             content: {
               'application/json': {
                 schema: {
-                  type: 'object',
-                  properties: {
-                    id: {
-                      type: 'string',
-                    },
-                    name: {
-                      type: 'string',
-                    },
-                    email: {
-                      type: 'string',
-                      format: 'email',
-                    },
-                  },
+                  $ref: '#/components/schemas/Product',
                 },
 
                 example: {
-                  id: '1',
-                  name: 'John',
-                  email: 'john@example.com',
+                  id: 1,
+                  title: 'Backpack',
+                  price: 109.95,
+                  category: 'men clothing',
                 },
               },
             },
           },
 
           '404': {
-            description: 'User not found',
+            description: 'Product not found',
+          },
+        },
+      },
+
+      delete: {
+        tags: ['Products'],
+        summary: 'Delete product',
+
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'integer',
+            },
+          },
+        ],
+
+        responses: {
+          '200': {
+            description: 'Product deleted',
           },
         },
       },
     },
 
-    '/login': {
+    '/products/categories': {
+      get: {
+        tags: ['Categories'],
+        summary: 'Get product categories',
+
+        responses: {
+          '200': {
+            description: 'Categories list',
+
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                  },
+                },
+
+                example: [
+                  'electronics',
+                  'jewelery',
+                  "men's clothing",
+                  "women's clothing",
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+
+    '/users/{id}': {
+      get: {
+        tags: ['Users'],
+        summary: 'Get user by ID',
+
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'integer',
+            },
+          },
+        ],
+
+        responses: {
+          '200': {
+            description: 'User information',
+
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User',
+                },
+
+                example: {
+                  id: 1,
+                  username: 'johnd',
+                  email: 'john@example.com',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+
+    '/auth/login': {
       post: {
         tags: ['Auth'],
 
-        summary: 'Login',
-        description: 'Authenticates a user and returns a session token',
+        summary: 'User login',
+        description: 'Returns authentication token',
 
         parameters: [
           {
             name: 'X-Client-Version',
             in: 'header',
             required: false,
-            description: 'Version of the client application',
             schema: {
               type: 'string',
             },
-            example: '1.2.0',
+            example: '1.0.0',
           },
         ],
 
@@ -149,10 +289,10 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
               schema: {
                 type: 'object',
 
-                required: ['email', 'password'],
+                required: ['username', 'password'],
 
                 properties: {
-                  email: {
+                  username: {
                     type: 'string',
                   },
 
@@ -164,8 +304,8 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
               },
 
               example: {
-                email: 'john@example.com',
-                password: 'secret',
+                username: 'mor_2314',
+                password: '83r5^_',
               },
             },
           },
@@ -173,7 +313,15 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
 
         responses: {
           '200': {
-            description: 'Authorized',
+            description: 'Successful login',
+
+            content: {
+              'application/json': {
+                example: {
+                  token: 'eyJhbGciOiJIUzI1...',
+                },
+              },
+            },
           },
 
           '401': {
@@ -182,175 +330,76 @@ export const MOCK_SCHEMA: OpenAPIV3.Document = {
         },
       },
     },
+  },
 
-    '/pets': {
-      get: {
-        tags: ['Pets'],
+  components: {
+    schemas: {
+      Product: {
+        type: 'object',
 
-        summary: 'Get pets',
-        description: 'Returns a list of pets',
-
-        parameters: [
-          {
-            name: 'limit',
-            in: 'query',
-            required: false,
-
-            schema: {
-              type: 'integer',
-            },
-
-            example: 10,
+        properties: {
+          id: {
+            type: 'integer',
           },
-          {
-            name: 'offset',
-            in: 'query',
-            required: false,
-            description:
-              'Number of items to skip before starting to collect the result set',
-            schema: {
-              type: 'integer',
-            },
-            example: 0,
+
+          title: {
+            type: 'string',
           },
-          {
-            name: 'type',
-            in: 'query',
-            required: false,
-            description: 'Filter pets by type',
-            schema: {
-              type: 'string',
-            },
-            example: 'Dog',
+
+          price: {
+            type: 'number',
           },
-          {
-            name: 'sort',
-            in: 'query',
-            required: false,
-            description: 'Sort order for results',
-            schema: {
-              type: 'string',
-              enum: ['asc', 'desc'],
-            },
-            example: 'asc',
+
+          description: {
+            type: 'string',
           },
-          {
-            name: 'X-Request-ID',
-            in: 'header',
-            required: false,
-            description: 'Unique request identifier for tracing',
-            schema: {
-              type: 'string',
-            },
+
+          category: {
+            type: 'string',
           },
-        ],
 
-        responses: {
-          '200': {
-            description: 'Pet list',
-
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'array',
-
-                  items: {
-                    type: 'object',
-
-                    properties: {
-                      id: {
-                        type: 'integer',
-                      },
-
-                      name: {
-                        type: 'string',
-                      },
-
-                      type: {
-                        type: 'string',
-                      },
-                    },
-                  },
-                },
-
-                example: [
-                  {
-                    id: 1,
-                    name: 'Tom',
-                    type: 'Cat',
-                  },
-                  {
-                    id: 2,
-                    name: 'Spike',
-                    type: 'Dog',
-                  },
-                ],
-              },
-            },
+          image: {
+            type: 'string',
+            format: 'uri',
           },
         },
       },
 
-      post: {
-        tags: ['Pets'],
+      CreateProduct: {
+        type: 'object',
 
-        summary: 'Create pet',
-        description: 'Creates a new pet record',
+        required: ['title', 'price', 'category'],
 
-        parameters: [
-          {
-            name: 'X-Request-ID',
-            in: 'header',
-            required: false,
-            description: 'Unique request identifier for tracing',
-            schema: {
-              type: 'string',
-            },
+        properties: {
+          title: {
+            type: 'string',
           },
-          {
-            name: 'notify',
-            in: 'query',
-            required: false,
-            description: 'Whether to send a notification after creation',
-            schema: {
-              type: 'boolean',
-            },
-            example: false,
+
+          price: {
+            type: 'number',
           },
-        ],
 
-        requestBody: {
-          required: true,
-
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-
-                required: ['name', 'type'],
-
-                properties: {
-                  name: {
-                    type: 'string',
-                  },
-
-                  type: {
-                    type: 'string',
-                  },
-                },
-              },
-
-              example: {
-                name: 'Charlie',
-                type: 'Dog',
-              },
-            },
+          category: {
+            type: 'string',
           },
         },
+      },
 
-        responses: {
-          '201': {
-            description: 'Pet created',
+      User: {
+        type: 'object',
+
+        properties: {
+          id: {
+            type: 'integer',
+          },
+
+          username: {
+            type: 'string',
+          },
+
+          email: {
+            type: 'string',
+            format: 'email',
           },
         },
       },

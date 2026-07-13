@@ -24,6 +24,11 @@ const Buttons = ({
   );
 
   const handleExecute = async () => {
+    if (requestUrl.includes('{')) {
+      alert('Please fill all path parameters.');
+      return;
+    }
+
     const result = (await executeProxyRequest({
       endpointUrl: requestUrl,
       method: method.toUpperCase() as
@@ -36,7 +41,7 @@ const Buttons = ({
             ? JSON.parse(body)
             : undefined,
     })) as ApiResult;
-
+    console.log(requestUrl);
     onResultExecute(result);
   };
 
