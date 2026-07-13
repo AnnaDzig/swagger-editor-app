@@ -1,22 +1,34 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
+import {
+  createCurrentUserSchema,
+  getCurrentUserSchema,
+  getCurrentUserSchemas,
+  updateCurrentUserSchema,
+} from '@/features/schemas/api/schemas-client';
 import { MOCK_SCHEMA_YAML } from '@/mocks/mockSchema';
-import { SchemaFormat } from '@/types/schema';
+import { useAppStore } from '@/store/app-store';
+import { SavedUserSchema, SchemaFormat } from '@/types/schema';
 import { dump, load } from 'js-yaml';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import detectedFormat from '../utils/detectedFormat';
+import validateSchema from '../utils/validateSchema';
 import EditorHeader from './EditorHeader';
 import MonacoEditor from './MonacoEditor';
 import StatusBar from './StatusBar';
-import detectedFormat from '../utils/detectedFormat';
-import validateSchema from '../utils/validateSchema';
-import { useAppStore } from '@/store/app-store';
 
 export default function Editor() {
-  const [value, setValue] = useState<string>(MOCK_SCHEMA_YAML);
+  const [value, setValue] = useState<string>(() => '');
   const [format, setFormat] = useState<SchemaFormat>('yaml');
   const [lineCount, setLineCount] = useState<number>(0);
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [schemaId, setSchemaId] = useState<string | null>(null);
+  const [savedSchemas, setSavedSchemas] = useState<SavedUserSchema[]>([]);
   const setSchema = useAppStore((state) => state.setSchema);
+  const user = useAppStore((state) => state.user);
+  const schema = useAppStore((state) => state.schema);
+  const isAuthLoading = useAppStore((state) => state.isAuthLoading);
 
   const handleFormatChange = (newFormat: SchemaFormat) => {
     try {
@@ -30,6 +42,7 @@ export default function Editor() {
       setFormat(newFormat);
     } catch {
       setFormat(newFormat);
+      toast.error('Failed to format schema.');
     }
   };
 
@@ -64,6 +77,72 @@ export default function Editor() {
     };
   }, [value, format, setSchema]);
 
+  useEffect(() => {
+    if (isAuthLoading) return;
+    const loadSchema = async () => {
+      if (!user) {
+        setValue(MOCK_SCHEMA_YAML);
+        setFormat('yaml');
+        return;
+      }
+      try {
+        const schemas = await getCurrentUserSchemas();
+        setSavedSchemas(schemas);
+        if (schemas.length > 0) {
+          const saved = schemas[0];
+          setSchemaId(saved.id);
+          setValue(saved.content);
+          setFormat(saved.format);
+        }
+      } catch {
+        toast.error('Failed to load schemas.');
+      }
+    };
+
+    loadSchema();
+  }, [user, isAuthLoading]);
+
+  const handleSchemaSelect = async (id: string) => {
+    if (id === 'new') {
+      setSchemaId(null);
+      setValue('');
+      return;
+    }
+    try {
+      const schema = await getCurrentUserSchema(id);
+      setSchemaId(id);
+      setValue(schema.content);
+      setFormat(schema.format);
+    } catch {
+      toast.error('Failed to load schema.');
+    }
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+
+    try {
+      if (schemaId) {
+        await updateCurrentUserSchema(schemaId, {
+          name: schema.parsedContent?.info.title ?? 'New Schema',
+          content: value,
+          format,
+        });
+        toast.success('Schema updated successfully !');
+      } else {
+        const savedSchema = await createCurrentUserSchema({
+          name: schema.parsedContent?.info.title ?? 'New Schema',
+          content: value,
+          format,
+        });
+        setSchemaId(savedSchema.id);
+        toast.success('Schema saved successfully !');
+      }
+    } catch {
+      toast.error('Failed to save schemas.');
+    }
+  };
+
   return (
     <section className="flex flex-col bg-background h-full min-h-120 md:min-h-0">
       <EditorHeader
@@ -71,6 +150,11 @@ export default function Editor() {
         onFormatChange={handleFormatChange}
         format={format}
         isValid={isValid}
+        isAuthenticated={!!user}
+        onSave={handleSave}
+        savedSchemaId={schemaId}
+        savedSchemas={savedSchemas}
+        onSchemaSelect={handleSchemaSelect}
       />
       <Separator className="m-0 p-0" />
       <div className="flex-1 h-full">

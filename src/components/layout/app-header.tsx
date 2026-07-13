@@ -1,9 +1,18 @@
 'use client';
 
-import { FileCode2, History, LogIn, LogOut, Menu, X, Zap } from 'lucide-react';
+import {
+  FileCode2,
+  History,
+  Home,
+  LogIn,
+  LogOut,
+  Menu,
+  X,
+  Zap,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,8 +25,13 @@ import { ROUTES } from '@/constants/routes';
 import { signOutUser } from '@/features/auth/api/auth-client';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/app-store';
+import { toast } from 'sonner';
 
 function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
+  if (href === ROUTES.MAIN) {
+    return <Home className="size-4" aria-hidden="true" />;
+  }
+
   if (href === ROUTES.HISTORY) {
     return <History className="size-4" aria-hidden="true" />;
   }
@@ -36,7 +50,9 @@ export function AppHeader() {
   const user = useAppStore((state) => state.user);
   const isAuthLoading = useAppStore((state) => state.isAuthLoading);
   const setUser = useAppStore((state) => state.setUser);
+  const format = useAppStore((state) => state.schema.format);
 
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
@@ -51,6 +67,44 @@ export function AppHeader() {
     ...publicNavigationItems,
     ...(isAuthLoading ? [] : authNavigationItems),
   ];
+
+  const mobileNavigationItems: NavigationItem[] = [
+    {
+      label: 'Home',
+      href: ROUTES.MAIN,
+    },
+    ...navigationItems,
+  ];
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 24);
+    }
+
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const desktopMediaQuery = window.matchMedia('(min-width: 768px)');
+
+    function handleDesktopChange(event: MediaQueryListEvent) {
+      if (event.matches) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+
+    desktopMediaQuery.addEventListener('change', handleDesktopChange);
+
+    return () => {
+      desktopMediaQuery.removeEventListener('change', handleDesktopChange);
+    };
+  }, []);
 
   function closeMobileMenu() {
     setIsMobileMenuOpen(false);
@@ -71,13 +125,21 @@ export function AppHeader() {
       router.push(ROUTES.MAIN);
     } catch {
       setSignOutError('Could not sign out. Please try again.');
+      toast.error('Failed to sign out.');
     } finally {
       setIsSigningOut(false);
     }
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-app-border bg-app-background text-slate-100">
+    <header
+      className={cn(
+        'sticky top-0 z-50 border-b text-slate-100 transition-[background-color,border-color,box-shadow] duration-300 ease-out',
+        isScrolled
+          ? 'border-app-primary/25 bg-app-background/95 shadow-lg shadow-black/20'
+          : 'border-app-border bg-app-background shadow-none',
+      )}
+    >
       <div className="flex min-h-16 min-w-0 items-center justify-between gap-3 px-4 sm:min-h-20 sm:px-6">
         <div className="flex min-w-0 items-center gap-4 lg:gap-8">
           <Link
@@ -111,35 +173,13 @@ export function AppHeader() {
               ·
             </span>
 
-            <span className="shrink-0 font-medium text-app-primary">yaml</span>
+            <span className="shrink-0 font-medium text-app-primary">
+              {format}
+            </span>
           </div>
         </div>
 
         <div className="hidden min-w-0 items-center justify-end gap-3 md:flex">
-          <div
-            className="hidden shrink-0 rounded-xl border border-app-border bg-app-surface p-1 xl:flex"
-            aria-label="Schema format"
-          >
-            <Button
-              type="button"
-              size="lg"
-              aria-pressed="true"
-              className="h-9 rounded-lg bg-app-primary px-5 font-bold text-white shadow-sm hover:bg-app-primary-hover"
-            >
-              YAML
-            </Button>
-
-            <Button
-              type="button"
-              size="lg"
-              variant="ghost"
-              aria-pressed="false"
-              className="h-9 rounded-lg px-5 font-bold text-slate-500 hover:bg-app-surface-hover hover:text-slate-200"
-            >
-              JSON
-            </Button>
-          </div>
-
           <nav
             aria-label="Main navigation"
             className="flex min-w-0 items-center justify-end gap-2 text-sm"
@@ -211,49 +251,8 @@ export function AppHeader() {
           id="mobile-navigation"
           className="border-t border-app-border bg-app-background px-4 py-4 md:hidden"
         >
-          <div className="mb-3 flex min-w-0 items-center gap-3 rounded-xl border border-app-border bg-app-surface px-4 py-3 text-sm">
-            <FileCode2
-              className="size-4 shrink-0 text-app-primary"
-              aria-hidden="true"
-            />
-
-            <span className="min-w-0 truncate font-semibold text-slate-200">
-              payments-api
-            </span>
-
-            <span className="text-slate-600" aria-hidden="true">
-              ·
-            </span>
-
-            <span className="shrink-0 font-medium text-app-primary">yaml</span>
-          </div>
-
-          <div
-            className="mb-4 grid grid-cols-2 rounded-xl border border-app-border bg-app-surface p-1"
-            aria-label="Schema format"
-          >
-            <Button
-              type="button"
-              size="lg"
-              aria-pressed="true"
-              className="h-10 rounded-lg bg-app-primary font-bold text-white shadow-sm hover:bg-app-primary-hover"
-            >
-              YAML
-            </Button>
-
-            <Button
-              type="button"
-              size="lg"
-              variant="ghost"
-              aria-pressed="false"
-              className="h-10 rounded-lg font-bold text-slate-500 hover:bg-app-surface-hover hover:text-slate-200"
-            >
-              JSON
-            </Button>
-          </div>
-
           <nav aria-label="Mobile navigation" className="grid gap-2">
-            {navigationItems.map((item) => {
+            {mobileNavigationItems.map((item) => {
               const isActive = pathname === item.href;
 
               return (

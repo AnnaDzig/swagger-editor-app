@@ -6,10 +6,11 @@ describe('HistoryList', () => {
     render(<HistoryList history={[]} />);
 
     expect(screen.getByText(/no requests yet/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /go to editor/i })).toHaveAttribute(
-      'href',
-      '/',
-    );
+    expect(
+      screen.getByRole('link', {
+        name: /open editor & viewer/i,
+      }),
+    ).toHaveAttribute('href', '/');
   });
 
   it('renders request analytics cards', () => {
