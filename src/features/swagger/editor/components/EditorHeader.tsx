@@ -41,6 +41,7 @@ export default function EditorHeader({
   onSchemaSelect,
 }: HeaderProps) {
   const isLandscape = useOrientation();
+  console.log(isValid);
   return (
     <div className="flex flex-wrap items-center gap-3 px-4 py-3 justify-between">
       <div className="rounded-xl border border-slate-800 bg-slate-900 p-1 md:flex">
@@ -92,7 +93,7 @@ export default function EditorHeader({
             <span tabIndex={!isAuthenticated ? 0 : undefined}>
               <Button
                 variant="outline"
-                disabled={!isAuthenticated}
+                disabled={!isAuthenticated || !isValid}
                 onClick={onSave}
               >
                 {savedSchemaId ? 'Update' : 'Save'}
