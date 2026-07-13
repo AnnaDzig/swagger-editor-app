@@ -7,6 +7,14 @@ import { vi } from 'vitest';
 
 import extractViewerData from '@/features/swagger/SwaggerViewer/extractViewerData';
 
+vi.mock('@/lib/firebase/client', () => ({
+  firebaseAuth: {
+    currentUser: null,
+    onAuthStateChanged: vi.fn(() => vi.fn()),
+  },
+  firestore: {},
+}));
+
 vi.mock('@/features/swagger/SwaggerViewer/extractViewerData', () => ({
   default: vi.fn(),
   getOperations: vi.fn(() => []),

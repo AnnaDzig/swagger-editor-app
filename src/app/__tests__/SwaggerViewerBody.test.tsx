@@ -5,6 +5,14 @@ import SwaggerViewerBody from '@/features/swagger/SwaggerViewer/SwaggerViewerBod
 import { MOCK_SCHEMA } from '@/mocks/mockSchema';
 import { userEvent } from '@testing-library/user-event';
 
+vi.mock('@/lib/firebase/client', () => ({
+  firebaseAuth: {
+    currentUser: null,
+    onAuthStateChanged: vi.fn(() => vi.fn()),
+  },
+  firestore: {},
+}));
+
 describe('SwaggerViewerBody', () => {
   vi.mock('@/features/swagger/SwaggerViewer/extractViewerData', () => ({
     getOperations: vi.fn(() => [
@@ -26,6 +34,7 @@ describe('SwaggerViewerBody', () => {
     schema: MOCK_SCHEMA,
     onClearSearchField: vi.fn(),
     onSetActiveTag: vi.fn(),
+    activeServer: 'http://localhost:3000/api',
   };
 
   it('renders all tags', () => {
