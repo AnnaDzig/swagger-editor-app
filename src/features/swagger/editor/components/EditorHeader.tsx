@@ -17,7 +17,7 @@ import { SavedUserSchema, SchemaFormat } from '@/types/schema';
 import useOrientation from '../hooks/useOrientation';
 import ValidateStatus from './ValidateStatus';
 
-interface HeaderProps {
+export interface HeaderProps {
   lineCount: number;
   format: SchemaFormat;
   onFormatChange: (format: 'yaml' | 'json') => void;
@@ -41,7 +41,6 @@ export default function EditorHeader({
   onSchemaSelect,
 }: HeaderProps) {
   const isLandscape = useOrientation();
-  console.log(isValid);
   return (
     <div className="flex flex-wrap items-center gap-3 px-4 py-3 justify-between">
       <div className="rounded-xl border border-slate-800 bg-slate-900 p-1 md:flex">
