@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [react()],
@@ -16,6 +16,17 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/mock/**',
+        'src/types/**',
+        'src/constants/**',
+        'src/lib/**',
+        'src/components/ui/**',
+        'src/app/global.css',
+        '**/providers/**',
+        'src/app/layout.tsx',
+      ],
     },
   },
 });
