@@ -7,10 +7,10 @@ import {
 } from './Accordion';
 import { SwaggerViewerBodyProps } from '@/types/SwaggerViewer';
 import { getOperations } from './extractViewerData';
-import getColor from './getColor';
 import NoEndpoints from './NoEndpoints';
 import { groupByTag } from './groupByTag';
-import EndpointDetails from './EndpointDetails';
+import EndpointDetails from './EndpointDetails/EndpointDetails';
+import { getMethodColor } from './getColor';
 
 const SwaggerViewerBody = ({
   activeTag,
@@ -18,6 +18,7 @@ const SwaggerViewerBody = ({
   schema,
   onClearSearchField,
   onSetActiveTag,
+  activeServer,
 }: SwaggerViewerBodyProps) => {
   const operations = getOperations(schema);
 
@@ -61,33 +62,36 @@ const SwaggerViewerBody = ({
 
                   <ul className="flex flex-col gap-1.5 ">
                     {operations.map((operation, i) => {
-                      const method = operation.method.toUpperCase();
+                      const method = operation.method;
+                      const methodLabel = method.toUpperCase();
                       const path = operation.path;
                       const summary = operation.operation.summary;
-                      const key = `${method}-${path}`;
 
-                      const { methodBgColor, methodBorderColor } =
-                        getColor(method);
+                      const key = `${methodLabel}-${path}`;
+
+                      const { methodBgColor, methodBorderColor, methodColor } =
+                        getMethodColor(methodLabel);
 
                       return (
                         <li
                           className="border border-[#30363D] rounded-md overflow-hidden"
                           key={key}
                         >
-                          <Accordion type="single" collapsible>
+                          <Accordion type="multiple">
                             <AccordionItem className="px-0" value={`item-${i}`}>
                               <AccordionTrigger className="hover:no-underline hover:bg-[#1B1F26]">
                                 <div className="flex w-full items-center justify-between pr-4 px-4">
                                   <p className="flex items-center gap-3">
                                     <span
-                                      className="flex justify-center items-center w-[52] h-[25] border rounded"
+                                      className="flex justify-center items-center h-[25] font-semibold text-[11px] px-2 py-1 min-w-13.5 tracking-wider border rounded"
 
                                       style={{
                                         backgroundColor: methodBgColor,
                                         borderColor: methodBorderColor,
+                                        color: methodColor,
                                       }}
                                     >
-                                      {method}
+                                      {methodLabel}
                                     </span>{' '}
                                     {path}
                                   </p>
@@ -95,8 +99,13 @@ const SwaggerViewerBody = ({
                                   <p>{summary}</p>
                                 </div>
                               </AccordionTrigger>
-                              <AccordionContent className="hover:no-underline hover:bg-[#1B1F26] border-t border-[#30363D] px-4">
-                                <EndpointDetails operations={operations} />
+                              <AccordionContent className="hover:no-underline border-t border-[#30363D] px-4">
+                                <EndpointDetails
+                                  operation={operation.operation}
+                                  method={method}
+                                  activeServer={activeServer}
+                                  endpointPath={path}
+                                />
                               </AccordionContent>
                             </AccordionItem>
                           </Accordion>

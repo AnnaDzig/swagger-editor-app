@@ -1,5 +1,8 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, Dispatch, ReactNode, SetStateAction } from 'react';
+
+export type method =
+  'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' | 'trace';
 
 export interface SwaggerViewerHeaderProps {
   title: string;
@@ -22,6 +25,7 @@ export interface SwaggerViewerBodyProps {
   schema: OpenAPIV3.Document;
   onClearSearchField: () => void;
   onSetActiveTag: (activeTag: string | null) => void;
+  activeServer: string;
 }
 
 export interface Parameter {
@@ -33,7 +37,7 @@ export interface Parameter {
 }
 
 export type Operation = {
-  method: string;
+  method: method;
   path: string;
   operation: OpenAPIV3.OperationObject;
 };
@@ -41,8 +45,58 @@ export type Operation = {
 export type Operations = Operation[];
 
 export interface EndpointDetailsProps {
-  operations: Operations;
+  operation: OpenAPIV3.OperationObject;
+  method: method;
+  activeServer: string;
+  endpointPath: string;
 }
+
+export interface ParametersProps {
+  operationParameters:
+    (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[] | undefined;
+}
+
+export interface TryItOutContentProps {
+  title: string;
+  parameters:
+    | (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[]
+    | OpenAPIV3.RequestBodyObject
+    | OpenAPIV3.ReferenceObject;
+  body?: string;
+  onRequestBody?: (value: string) => void;
+  query?: Record<string, string>;
+  onQueryParameters?: Dispatch<SetStateAction<Record<string, string>>>;
+}
+
+export interface TryItOutItemProps {
+  parameters: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
+  onQueryParameters?: Dispatch<SetStateAction<Record<string, string>>>;
+  query?: Record<string, string>;
+}
+
+export interface TryItOutProps {
+  parameters?: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
+  request?: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
+  responses?: OpenAPIV3.ResponsesObject;
+  method: method;
+  activeServer: string;
+  endpointPath: string;
+  onResultExecute: (result: ApiResult) => void;
+}
+
+export interface RequestBodyProps {
+  operationRequestBody:
+    OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject | undefined;
+}
+
+export interface ResponseProps {
+  operationResponses: OpenAPIV3.ResponsesObject;
+}
+
+export interface ResponseDetailsProps {
+  operationResponses: OpenAPIV3.ResponsesObject;
+}
+
 export interface SpanProps {
   children: ReactNode;
   className?: string;
@@ -50,4 +104,52 @@ export interface SpanProps {
   color?: string;
   borderColor?: string;
   bg?: string;
+}
+
+export interface SectionProps {
+  title: string;
+  parameters?: (OpenAPIV3.ParameterObject | OpenAPIV3.ReferenceObject)[];
+}
+
+export interface SpoilerProps {
+  successFormat: string;
+  contentSchema: string;
+  applicationType: string;
+  contentExample: string;
+}
+
+export interface UrlPathProps {
+  method: method;
+  activeServer: string;
+  endpointPath: string;
+  pathParameters: Record<string, string>;
+  queryParameters: Record<string, string>;
+}
+
+export interface HeadersPops {
+  onHeaders?: Dispatch<SetStateAction<Record<string, string>>>;
+}
+
+export interface ButtonsProps {
+  activeServer: string;
+  queryParameters: Record<string, string>;
+  pathParameters: Record<string, string>;
+  endpointPath: string;
+  method: method;
+  headers: Record<string, string>;
+  body: string;
+  onResultExecute: (result: ApiResult) => void;
+  onCopyCurl: () => void;
+  isCurlCopied: boolean;
+}
+
+export interface ApiResultAnalytics {
+  duration: number;
+}
+
+export interface ApiResult {
+  status: number;
+  headers: Record<string, string>;
+  analytics: ApiResultAnalytics;
+  data: unknown;
 }

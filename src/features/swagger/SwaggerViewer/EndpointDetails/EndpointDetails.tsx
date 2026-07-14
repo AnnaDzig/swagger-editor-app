@@ -1,0 +1,63 @@
+import { ApiResult, EndpointDetailsProps } from '@/types/SwaggerViewer';
+import Parameters from './Parameters';
+import Responses from './Responses/Responses';
+import TryItOut from './TryItOut/TryItOut';
+import RequestBody from './Request/RequestBody';
+import { useState } from 'react';
+import Result from './Result/Result';
+import getResponsesData from './getResponsesData';
+
+const EndpointDetails = ({
+  operation,
+  method,
+  activeServer,
+  endpointPath,
+}: EndpointDetailsProps) => {
+  const operationDescription = operation.description;
+  const operationParameters = operation.parameters;
+  const operationResponses = operation.responses;
+  const operationRequestBody = operation.requestBody;
+
+  const [execute, setExecute] = useState<ApiResult>();
+
+  const handleResultExecute = (result: ApiResult) => {
+    setExecute(result);
+  };
+
+  const { appType = 'application/json' } =
+    getResponsesData(operationResponses) ?? {};
+
+  return (
+    <>
+      <div className="flex flex-col gap-3.5 text-[#8b949e]">
+        <p className="text-[13px] mt-3">{operationDescription}</p>
+
+        {operationParameters && (
+          <Parameters operationParameters={operationParameters} />
+        )}
+
+        {operationRequestBody && (
+          <RequestBody operationRequestBody={operationRequestBody} />
+        )}
+
+        {operationResponses && (
+          <Responses operationResponses={operationResponses} />
+        )}
+
+        <TryItOut
+          parameters={operationParameters}
+          request={operationRequestBody}
+          responses={operationResponses}
+          method={method}
+          activeServer={activeServer}
+          endpointPath={endpointPath}
+          onResultExecute={handleResultExecute}
+        />
+
+        <Result result={execute} appType={appType} />
+      </div>
+    </>
+  );
+};
+
+export default EndpointDetails;
