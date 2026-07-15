@@ -1,10 +1,14 @@
+import { getTranslations } from 'next-intl/server';
 import { ArrowLeft, FileQuestion, Home } from 'lucide-react';
 import Link from 'next/link';
+import './globals.css';
 
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 
-export default function NotFoundPage() {
+export default async function NotFoundPage() {
+  const t = await getTranslations('NotFound');
+
   return (
     <main className="relative flex min-h-[calc(100vh-10rem)] items-center justify-center overflow-hidden px-4 py-16 sm:px-6">
       <div
@@ -21,16 +25,15 @@ export default function NotFoundPage() {
         </div>
 
         <p className="mb-3 font-mono text-sm font-semibold uppercase tracking-[0.3em] text-app-primary">
-          Error 404
+          {t('error')}
         </p>
 
         <h1 className="text-balance text-4xl font-bold tracking-tight text-slate-100 sm:text-5xl">
-          This endpoint does not exist
+          {t('title')}
         </h1>
 
         <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-slate-400 sm:text-lg">
-          The page may have been moved, deleted, or the URL may be incorrect.
-          Return to the Swagger workspace and continue working with your API.
+          {t('description')}
         </p>
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -41,7 +44,7 @@ export default function NotFoundPage() {
           >
             <Link href={ROUTES.MAIN} prefetch={false}>
               <Home className="size-4" aria-hidden="true" />
-              Back to workspace
+              {t('back')}
             </Link>
           </Button>
 
@@ -53,7 +56,7 @@ export default function NotFoundPage() {
           >
             <Link href={ROUTES.ABOUT}>
               <ArrowLeft className="size-4" aria-hidden="true" />
-              About ApiFlux
+              {t('about')}
             </Link>
           </Button>
         </div>

@@ -1,4 +1,4 @@
-import HomePage from '@/app/page';
+import HomePage from '@/app/[locale]/page';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { render, screen } from '@testing-library/react';
 

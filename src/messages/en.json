@@ -1,0 +1,47 @@
+{
+  "Navigation": {
+    "about": "About",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "history": "History",
+    "home": "Home",
+    "signOut": "Sign Out"
+  },
+  "About": {
+    "title": "ApiFlux — OpenAPI Studio",
+    "description": "A browser-based Swagger and OpenAPI editor, documentation viewer, and REST client created as an RS School team project. ApiFlux provides JSON and YAML editing, schema validation, interactive API documentation, request execution, authenticated workflows, history, analytics, and user schema persistence.",
+
+    "projectTechnologies": "Project technologies",
+
+    "sections": {
+      "rsSchool": "RS School",
+      "technologies": "Technologies",
+      "team": "Team",
+      "resources": "Resources"
+    },
+
+    "rsSchool": {
+      "paragraph1": "ApiFlux was developed as a collaborative final project for the React course at Rolling Scopes School.",
+      "paragraph2": "RS School is a free community-based education program focused on practical software engineering. Its courses emphasize independent learning, teamwork, code reviews, mentoring, and building production-style applications."
+    }
+  },
+
+  "Errors": {
+    "generic": "Something went wrong",
+    "signOut": "Failed to sign out. Please try again."
+  },
+
+  "Footer": {
+    "buildStart": "Built with ",
+    "buildEnd": " by RS School students · 2026",
+    "about": "About"
+  },
+
+  "NotFound": {
+    "error": "Error 404",
+    "title": "This endpoint does not exist",
+    "description": "The page may have been moved, deleted, or the URL may be incorrect. Return to the Swagger workspace and continue working with your API.",
+    "back": "Back to workspace",
+    "about": "About ApiFlux"
+  }
+}

@@ -11,7 +11,7 @@ import {
   Zap,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,8 @@ import { signOutUser } from '@/features/auth/api/auth-client';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/app-store';
 import { toast } from 'sonner';
+import LanguageToggle from '@/app/LanguageToggle';
+import { useTranslations } from 'next-intl';
 
 function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
   if (href === ROUTES.MAIN) {
@@ -44,6 +46,7 @@ function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
 }
 
 export function AppHeader() {
+  const t = useTranslations('Navigation');
   const pathname = usePathname();
   const router = useRouter();
 
@@ -184,8 +187,10 @@ export function AppHeader() {
             aria-label="Main navigation"
             className="flex min-w-0 items-center justify-end gap-2 text-sm"
           >
+            <LanguageToggle />
             {navigationItems.map((item) => {
               const isActive = pathname === item.href;
+              console.log(item);
 
               return (
                 <Button
@@ -204,7 +209,8 @@ export function AppHeader() {
                     aria-current={isActive ? 'page' : undefined}
                   >
                     <NavigationIcon href={item.href} />
-                    {item.label}
+
+                    {t(item.label)}
                   </Link>
                 </Button>
               );
@@ -220,7 +226,7 @@ export function AppHeader() {
                 className="border-app-border bg-app-background px-4 text-slate-400 hover:border-app-primary/50 hover:bg-app-surface-hover hover:text-slate-100"
               >
                 <LogOut className="size-4" aria-hidden="true" />
-                {isSigningOut ? 'Signing Out…' : 'Sign Out'}
+                {isSigningOut ? t('signingOut') : t('signOut')}
               </Button>
             )}
           </nav>
