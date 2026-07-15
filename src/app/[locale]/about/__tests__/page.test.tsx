@@ -1,11 +1,34 @@
 import { render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+import en from '@/messages/en.json';
 
 import AboutPage from '../page';
 
+vi.mock('next-intl/server', () => ({
+  getTranslations: async () => {
+    return (key: string) => {
+      const value = key
+        .split('.')
+        .reduce<unknown>(
+          (obj, part) => (obj as Record<string, unknown>)?.[part],
+          en.About,
+        );
+
+      return typeof value === 'string' ? value : key;
+    };
+  },
+}));
+
+const renderAboutPage = async () => {
+  const page = await AboutPage();
+
+  return render(page);
+};
+
 describe('AboutPage', () => {
-  it('renders the project introduction', () => {
-    render(<AboutPage />);
+  it('renders the project introduction', async () => {
+    await renderAboutPage();
 
     expect(
       screen.getByRole('heading', {
@@ -19,8 +42,8 @@ describe('AboutPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the main project sections', () => {
-    render(<AboutPage />);
+  it('renders the main project sections', async () => {
+    await renderAboutPage();
 
     expect(
       screen.getByRole('heading', { name: 'RS School' }),
@@ -37,8 +60,8 @@ describe('AboutPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the current project technologies', () => {
-    render(<AboutPage />);
+  it('renders the current project technologies', async () => {
+    await renderAboutPage();
 
     const technologyNames = [
       'Next.js',
@@ -59,8 +82,8 @@ describe('AboutPage', () => {
     });
   });
 
-  it('renders all team members and their roles', () => {
-    render(<AboutPage />);
+  it('renders all team members and their roles', async () => {
+    await renderAboutPage();
 
     expect(
       screen.getByRole('heading', {
@@ -96,8 +119,8 @@ describe('AboutPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders each team member GitHub profile', () => {
-    render(<AboutPage />);
+  it('renders each team member GitHub profile', async () => {
+    await renderAboutPage();
 
     const mikhailLink = screen.getByRole('link', {
       name: /open Mikhail Kruk's GitHub profile/i,
@@ -130,8 +153,8 @@ describe('AboutPage', () => {
     });
   });
 
-  it('renders the project resources with correct links', () => {
-    render(<AboutPage />);
+  it('renders the project resources with correct links', async () => {
+    await renderAboutPage();
 
     const resourcesSection = screen
       .getByRole('heading', { name: 'Resources' })
@@ -162,6 +185,7 @@ describe('AboutPage', () => {
       'href',
       'https://spec.openapis.org/oas/v3.0.3.html',
     );
+
     [repositoryLink, rsSchoolLink, openApiLink].forEach((link) => {
       expect(link).toHaveAttribute('target', '_blank');
 
@@ -172,8 +196,8 @@ describe('AboutPage', () => {
     });
   });
 
-  it('does not render a project task board resource', () => {
-    render(<AboutPage />);
+  it('does not render a project task board resource', async () => {
+    await renderAboutPage();
 
     expect(screen.queryByText(/Project Task Board/i)).not.toBeInTheDocument();
   });

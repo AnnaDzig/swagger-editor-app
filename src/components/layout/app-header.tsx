@@ -209,7 +209,6 @@ export function AppHeader() {
             <LanguageToggle />
             {navigationItems.map((item) => {
               const isActive = pathname === item.href;
-              console.log(item);
 
               return (
                 <Button
