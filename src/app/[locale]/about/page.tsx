@@ -16,6 +16,7 @@ import {
   type TeamMember,
 } from '@/features/about/about-data';
 import { cn } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
 type SectionHeadingProps = {
   id: string;
@@ -116,7 +117,9 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const t = await getTranslations('About');
+
   return (
     <main className="bg-app-background px-4 py-8 text-slate-100 sm:px-6 sm:py-10 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-10">
@@ -137,15 +140,11 @@ export default function AboutPage() {
                 id="project-title"
                 className="text-3xl font-bold tracking-tight text-slate-100"
               >
-                ApiFlux — OpenAPI Studio
+                {t('title')}
               </h1>
 
               <p className="mt-3 max-w-4xl text-base leading-7 text-slate-400 sm:text-lg">
-                A browser-based Swagger and OpenAPI editor, documentation
-                viewer, and REST client created as an RS School team project.
-                ApiFlux provides JSON and YAML editing, schema validation,
-                interactive API documentation, request execution, authenticated
-                workflows, history, analytics, and user schema persistence.
+                {t('description')}
               </p>
 
               <ul
@@ -178,13 +177,13 @@ export default function AboutPage() {
               id="rs-school-heading"
               className="text-xl font-bold tracking-tight text-slate-100"
             >
-              RS School
+              {t('sections.rsSchool')}
             </h2>
           </div>
 
           <div className="mt-5 space-y-4 text-base leading-7 text-slate-400">
             <p>
-              ApiFlux was developed as a collaborative final project for the
+              {t('rsSchool.paragraph1')}
               React course at{' '}
               <a
                 href="https://rs.school/"
@@ -197,18 +196,13 @@ export default function AboutPage() {
               .
             </p>
 
-            <p>
-              RS School is a free community-based education program focused on
-              practical software engineering. Its courses emphasize independent
-              learning, teamwork, code reviews, mentoring, and building
-              production-style applications.
-            </p>
+            <p>{t('rsSchool.paragraph2')}</p>
           </div>
         </section>
 
-        <section aria-labelledby="technologies-heading">
+        <section aria-labelledby={t('projectTechnologies')}>
           <SectionHeading id="technologies-heading" icon={Code2}>
-            Technologies
+            {t('sections.technologies')}
           </SectionHeading>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -235,7 +229,7 @@ export default function AboutPage() {
 
         <section aria-labelledby="team-heading">
           <SectionHeading id="team-heading" icon={Users}>
-            Team
+            {t('sections.team')}
           </SectionHeading>
 
           <div className="mt-6 grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -247,7 +241,7 @@ export default function AboutPage() {
 
         <section aria-labelledby="resources-heading">
           <SectionHeading id="resources-heading" icon={ExternalLink}>
-            Resources
+            {t('sections.resources')}
           </SectionHeading>
 
           <div className="mt-6 overflow-hidden rounded-2xl border border-app-border bg-app-surface shadow-sm">

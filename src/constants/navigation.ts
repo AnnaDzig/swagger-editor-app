@@ -7,25 +7,25 @@ export type NavigationItem = {
 
 export const publicNavigationItems: NavigationItem[] = [
   {
-    label: 'About',
+    label: 'about',
     href: ROUTES.ABOUT,
   },
 ];
 
 export const guestNavigationItems: NavigationItem[] = [
   {
-    label: 'Sign In',
+    label: 'signIn',
     href: ROUTES.SIGN_IN,
   },
   {
-    label: 'Sign Up',
+    label: 'signUp',
     href: ROUTES.SIGN_UP,
   },
 ];
 
 export const authenticatedNavigationItems: NavigationItem[] = [
   {
-    label: 'History',
+    label: 'history',
     href: ROUTES.HISTORY,
   },
 ];

@@ -11,7 +11,7 @@ import {
   Zap,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,8 @@ import { signOutUser } from '@/features/auth/api/auth-client';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/app-store';
 import { toast } from 'sonner';
+import LanguageToggle from '@/app/LanguageToggle';
+import { useTranslations } from 'next-intl';
 
 function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
   if (href === ROUTES.MAIN) {
@@ -44,6 +46,7 @@ function NavigationIcon({ href }: Pick<NavigationItem, 'href'>) {
 }
 
 export function AppHeader() {
+  const t = useTranslations('Navigation');
   const pathname = usePathname();
   const router = useRouter();
 
@@ -134,27 +137,46 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 border-b text-slate-100 transition-[background-color,border-color,box-shadow] duration-300 ease-out',
+        'sticky top-0 z-50 border-b text-slate-100 backdrop-blur-md transition-all duration-300 ease-out',
         isScrolled
-          ? 'border-app-primary/25 bg-app-background/95 shadow-lg shadow-black/20'
-          : 'border-app-border bg-app-background shadow-none',
+          ? [
+              'border-app-primary/30',
+              'bg-app-background/90',
+              'shadow-xl shadow-black/30',
+            ]
+          : ['border-app-border', 'bg-app-background', 'shadow-none'],
       )}
     >
-      <div className="flex min-h-16 min-w-0 items-center justify-between gap-3 px-4 sm:min-h-20 sm:px-6">
+      <div
+        className={cn(
+          'flex min-w-0 items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-6',
+          isScrolled ? 'min-h-14' : 'min-h-20',
+        )}
+      >
         <div className="flex min-w-0 items-center gap-4 lg:gap-8">
           <Link
             href={ROUTES.MAIN}
             onClick={closeMobileMenu}
             className="flex shrink-0 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-primary focus-visible:ring-offset-2 focus-visible:ring-offset-app-background"
           >
-            <span className="flex size-10 items-center justify-center rounded-xl bg-app-primary text-white shadow-lg shadow-app-primary/20 sm:size-11 sm:rounded-2xl">
+            <span
+              className={cn(
+                'flex items-center justify-center rounded-xl bg-app-primary text-white shadow-lg shadow-app-primary/20 transition-all duration-300',
+                isScrolled ? 'size-9' : 'size-11 sm:rounded-2xl',
+              )}
+            >
               <Zap
                 className="size-5 fill-current sm:size-6"
                 aria-hidden="true"
               />
             </span>
 
-            <span className="hidden text-xl font-bold tracking-tight min-[390px]:inline">
+            <span
+              className={cn(
+                'hidden font-bold tracking-tight transition-all duration-300 min-[390px]:inline',
+                isScrolled ? 'text-lg' : 'text-xl',
+              )}
+            >
               ApiFlux
             </span>
           </Link>
@@ -184,6 +206,7 @@ export function AppHeader() {
             aria-label="Main navigation"
             className="flex min-w-0 items-center justify-end gap-2 text-sm"
           >
+            <LanguageToggle />
             {navigationItems.map((item) => {
               const isActive = pathname === item.href;
 
@@ -204,7 +227,8 @@ export function AppHeader() {
                     aria-current={isActive ? 'page' : undefined}
                   >
                     <NavigationIcon href={item.href} />
-                    {item.label}
+
+                    {t(item.label)}
                   </Link>
                 </Button>
               );
@@ -220,7 +244,7 @@ export function AppHeader() {
                 className="border-app-border bg-app-background px-4 text-slate-400 hover:border-app-primary/50 hover:bg-app-surface-hover hover:text-slate-100"
               >
                 <LogOut className="size-4" aria-hidden="true" />
-                {isSigningOut ? 'Signing Out…' : 'Sign Out'}
+                {isSigningOut ? t('signingOut') : t('signOut')}
               </Button>
             )}
           </nav>
@@ -236,7 +260,10 @@ export function AppHeader() {
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-navigation"
           onClick={toggleMobileMenu}
-          className="shrink-0 border-app-border bg-app-background text-slate-300 hover:bg-app-surface-hover hover:text-slate-100 md:hidden"
+          className={cn(
+            'shrink-0 border-app-border text-slate-300 transition-all duration-300 hover:bg-app-surface-hover hover:text-slate-100 md:hidden',
+            isScrolled ? 'bg-app-surface' : 'bg-app-background',
+          )}
         >
           {isMobileMenuOpen ? (
             <X className="size-5" aria-hidden="true" />
@@ -273,7 +300,7 @@ export function AppHeader() {
                     aria-current={isActive ? 'page' : undefined}
                   >
                     <NavigationIcon href={item.href} />
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </Button>
               );
